@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import javax.inject.Singleton
 
@@ -18,6 +19,10 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun blockedDomainsDao(): BlockedDomainsDao
+
+    fun allowedDomainsDao(): AllowedDomainsDao
+
+    fun dispatcherProvider(): DispatcherProvider
 
     fun getContext(): Context
 

@@ -11,8 +11,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import org.angmarc.tracker_blocker_browser.BrowserApplication
+import org.angmarc.tracker_blocker_browser.EventObserver
 import org.angmarc.tracker_blocker_browser.R
-import org.angmarc.tracker_blocker_browser.allowed_list.AllowListFragmentDialog
+import org.angmarc.tracker_blocker_browser.allowed_list.AllowDomainFragmentDialog
 import org.angmarc.tracker_blocker_browser.databinding.ActivityBrowserBinding
 import org.angmarc.tracker_blocker_browser.extensions.hideKeyboard
 import javax.inject.Inject
@@ -26,6 +27,8 @@ class BrowserActivity : AppCompatActivity() {
     @Inject
     lateinit var webClient: BrowserWebClient
 
+    private val viewModel: BrowserViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,7 +38,6 @@ class BrowserActivity : AppCompatActivity() {
             .build()
             .inject(this)
 
-        val viewModel: BrowserViewModel by viewModels()
         binding = ActivityBrowserBinding.inflate(LayoutInflater.from(this), null, false)
 
         setContentView(binding.root)
@@ -66,6 +68,11 @@ class BrowserActivity : AppCompatActivity() {
             webView.loadUrl(it)
             hideKeyboard()
         })
+        viewModel.allowWebsiteClicks.observe(this, EventObserver {
+            AllowDomainFragmentDialog
+                .instance(domainNameToAllow = it)
+                .show(supportFragmentManager, FRAGMENT_ADD_TO_ALLOW_LIST)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -75,7 +82,7 @@ class BrowserActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.allowList) {
-            AllowListFragmentDialog.instance().show(supportFragmentManager, FRAGMENT_ADD_TO_ALLOW_LIST)
+            viewModel.allowCurrentWebsite()
         }
         return super.onOptionsItemSelected(item)
     }

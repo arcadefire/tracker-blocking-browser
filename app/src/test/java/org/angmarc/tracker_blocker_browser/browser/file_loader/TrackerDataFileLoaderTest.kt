@@ -8,6 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerDataFileLoader

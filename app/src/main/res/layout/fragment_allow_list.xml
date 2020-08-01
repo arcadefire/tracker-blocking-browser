@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="org.angmarc.tracker_blocker_browser.allowed_list.Reasons" />
+        <import type="org.angmarc.tracker_blocker_browser.data.database.BreakageType" />
 
         <variable
             name="viewmodel"
-            type="org.angmarc.tracker_blocker_browser.allowed_list.AllowListViewModel" />
+            type="org.angmarc.tracker_blocker_browser.allowed_list.AllowDomainViewModel" />
     </data>
 
     <ScrollView
@@ -27,55 +27,56 @@
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@={viewmodel.selectedRadio}">
 
                     <RadioButton
+                        android:id="@+id/videosButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.VIDEOS_DONT_LOAD)}"
-                        android:text="Video don't load" />
+                        android:text="Videos don't load" />
 
                     <RadioButton
+                        android:id="@+id/imagesButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.IMAGES_DONT_LOAD)}"
                         android:text="Images don't load" />
 
                     <RadioButton
+                        android:id="@+id/commentsButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.MISSING_COMMENTS)}"
                         android:text="Missing comments" />
 
                     <RadioButton
+                        android:id="@+id/contentsButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.MISSING_CONTENTS)}"
                         android:text="Contents are missing" />
 
                     <RadioButton
+                        android:id="@+id/navigationButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.BROKEN_NAVIGATION)}"
                         android:text="Navigation is broken" />
 
                     <RadioButton
+                        android:id="@+id/loginButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.UNABLE_TO_LOGIN)}"
                         android:text="Unable to log in" />
 
                     <RadioButton
+                        android:id="@+id/paywallButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.PAYWALL)}"
                         android:text="Ask to disable the blocker (paywall)" />
 
                 </RadioGroup>
@@ -85,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add"
+                android:onClick="@{() -> viewmodel.addAllowedDomain()}"
                 android:layout_gravity="end"/>
         </LinearLayout>
     </ScrollView>

@@ -81,4 +81,5 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     testImplementation "org.mockito:mockito-inline:2.21.0"
     testImplementation "org.assertj:assertj-core:3.12.2"
+    testImplementation 'android.arch.core:core-testing:1.1.1'
 }

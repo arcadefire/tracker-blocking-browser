@@ -8,6 +8,7 @@ import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.database.Database
 import javax.inject.Singleton
@@ -46,4 +47,9 @@ object DatabaseModule {
     @Provides
     fun provideBlockedDomainsDao(database: Database): BlockedDomainsDao =
         database.blockedDomainsDao()
+
+    @Singleton
+    @Provides
+    fun provideAllowedDomainsDao(database: Database): AllowedDomainsDao =
+        database.allowedDomainsDao()
 }

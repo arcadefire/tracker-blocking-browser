@@ -1,7 +1,6 @@
-package org.angmarc.tracker_blocker_browser.browser.file_loader
+package org.angmarc.tracker_blocker_browser
 
 import kotlinx.coroutines.Dispatchers
-import org.angmarc.tracker_blocker_browser.DispatcherProvider
 
 class TestDispatcherProvider : DispatcherProvider {
 
