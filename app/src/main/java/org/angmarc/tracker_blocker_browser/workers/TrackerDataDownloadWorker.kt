@@ -19,7 +19,7 @@ class TrackerDataDownloadWorker(
     override fun doWork(): Result {
         try {
             runBlocking {
-                val trackerDataFile = trackersDataService.trackerDataList()
+                val trackerDataFile = trackersDataService.trackersDataFile()
                 trackerDataFile.trackers.entries.forEach { (domain, _) ->
                     blockedDomainsDao.insert(BlockedDomain(domain))
                 }
@@ -32,7 +32,7 @@ class TrackerDataDownloadWorker(
 
     companion object {
 
-        val workerTag =  TrackerDataDownloadWorker::class.java.simpleName
+        val workerTag: String =  TrackerDataDownloadWorker::class.java.simpleName
 
         fun workRequest(): PeriodicWorkRequest {
             val constraints = Constraints.Builder()

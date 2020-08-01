@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface TrackersDataService {
 
     @GET("https://staticcdn.duckduckgo.com/trackerblocking/v2.1/tds.json")
-    suspend fun trackerDataList(): TrackersDataFile
+    suspend fun trackersDataFile(): TrackersDataFile
 }
