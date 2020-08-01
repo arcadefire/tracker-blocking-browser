@@ -10,6 +10,9 @@ interface AllowedDomainsDao {
     @Query("SELECT * FROM allowed_domains")
     fun allowedDomains(): List<AllowedDomain>
 
+    @Query("SELECT * FROM allowed_domains WHERE domain = :url")
+    fun find(url: String): AllowedDomain?
+
     @Insert
     fun insert(allowedDomain: AllowedDomain)
 }

@@ -1,11 +1,14 @@
 package org.angmarc.tracker_blocker_browser.browser
 
+import android.net.Uri
 import android.webkit.WebResourceRequest
+import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import javax.inject.Inject
 
 class TrackerAnalyzer @Inject constructor(
-    private val blockedDomainsDao: BlockedDomainsDao
+    private val blockedDomainsDao: BlockedDomainsDao,
+    private val allowedDomainsDao: AllowedDomainsDao
 ) {
 
     private val trackerSet: HashSet<String> by lazy {
@@ -18,22 +21,24 @@ class TrackerAnalyzer @Inject constructor(
     }
 
     fun shouldBlockRequest(webViewUrl: String, request: WebResourceRequest): Boolean {
-        val host = request.url.host
+        val rootUri = Uri.parse(webViewUrl)
+        val requestHost = request.url.host.orEmpty()
 
-        // No need to block if the url being loaded is a subdomain of the one
-        // typed in the address bar
-        if (host != null && isSubdomain(webViewUrl, host)) {
+        // This site has been whitelisted
+        if (allowedDomainsDao.find(rootUri.host.orEmpty()) != null) {
             return false
         }
 
-        val isTracker = if (host != null) {
-            trackerSet.contains(extractDomain(host))
-        } else {
-            false
+        // No need to block if the url being loaded is a subdomain of the one
+        // typed in the address bar
+        if (isSubdomain(webViewUrl, requestHost)) {
+            return false
         }
 
+        val isTracker = trackerSet.contains(extractDomain(requestHost))
+
         if (isTracker) {
-            println("$host is a tracker!")
+            println("$requestHost is a tracker!")
         }
 
         return isTracker

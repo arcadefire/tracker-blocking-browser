@@ -1,5 +1,6 @@
 package org.angmarc.tracker_blocker_browser.browser
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -13,12 +14,15 @@ class BrowserViewModel : ViewModel() {
     val addressBarText = MutableLiveData<String>()
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
 
-    val url : LiveData<String> = Transformations.map(addressBarText) {
+    val url: LiveData<String> = Transformations.map(addressBarText) {
         val address = (it ?: "").trim()
         HTTP_PREFIX + address
     }
 
     fun allowCurrentWebsite() {
-        allowWebsiteClicks.postValue(Event(addressBarText.value.orEmpty()))
+        val uri = Uri.parse(addressBarText.value.orEmpty())
+        if (uri.host.orEmpty().isNotBlank()) {
+            allowWebsiteClicks.postValue(Event(addressBarText.value.orEmpty()))
+        }
     }
 }
