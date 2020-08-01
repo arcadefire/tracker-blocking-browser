@@ -9,7 +9,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import org.angmarc.tracker_blocker_browser.BrowserApplication
+import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
 import org.angmarc.tracker_blocker_browser.databinding.FragmentStatsBinding
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ class StatsDialogFragment : DialogFragment() {
         DaggerStatsComponent
             .builder()
             .applicationComponent(
-                (requireActivity().application as BrowserApplication).applicationComponent
+                (requireActivity().application as TrackerBlockingApplication).applicationComponent
             )
             .viewModelStoreOwner(this)
             .build()

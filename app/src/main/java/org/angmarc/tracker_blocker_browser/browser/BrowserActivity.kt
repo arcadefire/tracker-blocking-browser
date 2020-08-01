@@ -10,8 +10,8 @@ import android.webkit.WebView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import org.angmarc.tracker_blocker_browser.BrowserApplication
-import org.angmarc.tracker_blocker_browser.EventObserver
+import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
+import org.angmarc.tracker_blocker_browser.core.EventObserver
 import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.allowed_list.AllowDomainFragmentDialog
 import org.angmarc.tracker_blocker_browser.databinding.ActivityBrowserBinding
@@ -36,7 +36,7 @@ class BrowserActivity : AppCompatActivity() {
 
         DaggerBrowserActivityComponent
             .builder()
-            .applicationComponent((application as BrowserApplication).applicationComponent)
+            .applicationComponent((application as TrackerBlockingApplication).applicationComponent)
             .build()
             .inject(this)
 
@@ -70,16 +70,18 @@ class BrowserActivity : AppCompatActivity() {
             webView.loadUrl(it)
             hideKeyboard()
         })
-        viewModel.allowWebsiteClicks.observe(this, EventObserver {
-            AllowDomainFragmentDialog
-                .instance(domainNameToAllow = it)
-                .show(supportFragmentManager, FRAGMENT_ADD_TO_ALLOW_LIST)
-        })
-        viewModel.statisticsClicks.observe(this, EventObserver {
-            StatsDialogFragment
-                .instance()
-                .show(supportFragmentManager, FRAGMENT_VIEW_STATISTICS)
-        })
+        viewModel.allowWebsiteClicks.observe(this,
+            EventObserver {
+                AllowDomainFragmentDialog
+                    .instance(domainNameToAllow = it)
+                    .show(supportFragmentManager, FRAGMENT_ADD_TO_ALLOW_LIST)
+            })
+        viewModel.statisticsClicks.observe(this,
+            EventObserver {
+                StatsDialogFragment
+                    .instance()
+                    .show(supportFragmentManager, FRAGMENT_VIEW_STATISTICS)
+            })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

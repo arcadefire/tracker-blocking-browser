@@ -4,7 +4,7 @@ import android.content.res.Resources
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.angmarc.tracker_blocker_browser.DispatcherProvider
+import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao

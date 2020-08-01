@@ -1,8 +1,10 @@
 package org.angmarc.tracker_blocker_browser
 
 import kotlinx.coroutines.Dispatchers
+import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 
-class TestDispatcherProvider : DispatcherProvider {
+class TestDispatcherProvider :
+    DispatcherProvider {
 
     override fun io() = Dispatchers.Main
 

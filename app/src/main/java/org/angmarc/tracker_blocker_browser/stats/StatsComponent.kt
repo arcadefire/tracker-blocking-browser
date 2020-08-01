@@ -3,8 +3,8 @@ package org.angmarc.tracker_blocker_browser.stats
 import androidx.lifecycle.ViewModelStoreOwner
 import dagger.BindsInstance
 import dagger.Component
-import org.angmarc.tracker_blocker_browser.ActivityScope
-import org.angmarc.tracker_blocker_browser.ApplicationComponent
+import org.angmarc.tracker_blocker_browser.di.ActivityScope
+import org.angmarc.tracker_blocker_browser.di.ApplicationComponent
 
 @ActivityScope
 @Component(

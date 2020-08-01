@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import org.angmarc.tracker_blocker_browser.BrowserApplication
-import org.angmarc.tracker_blocker_browser.EventObserver
+import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
+import org.angmarc.tracker_blocker_browser.core.EventObserver
 import org.angmarc.tracker_blocker_browser.databinding.FragmentAllowListBinding
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class AllowDomainFragmentDialog : DialogFragment() {
         DaggerAllowDomainComponent
             .builder()
             .applicationComponent(
-                (requireActivity().application as BrowserApplication).applicationComponent
+                (requireActivity().application as TrackerBlockingApplication).applicationComponent
             )
             .viewModelStoreOwner(this)
             .domainNameToAllow(arguments?.getString(DOMAIN_NAME) ?: "")
@@ -45,9 +45,10 @@ class AllowDomainFragmentDialog : DialogFragment() {
             .apply {
                 viewmodel = viewModel
             }
-        viewModel.onAllowWebsiteAdded.observe(this, EventObserver {
-            dismiss()
-        })
+        viewModel.onAllowWebsiteAdded.observe(this,
+            EventObserver {
+                dismiss()
+            })
         return binding.root
     }
 

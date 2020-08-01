@@ -82,4 +82,12 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:2.21.0"
     testImplementation "org.assertj:assertj-core:3.12.2"
     testImplementation 'android.arch.core:core-testing:1.1.1'
+
+    // Background work
+    implementation "androidx.work:work-runtime:2.4.0"
+    implementation "androidx.work:work-runtime-ktx:2.4.0"
+
+    // Networking
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
 }

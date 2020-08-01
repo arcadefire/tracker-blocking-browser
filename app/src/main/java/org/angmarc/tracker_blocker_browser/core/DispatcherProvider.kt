@@ -1,4 +1,4 @@
-package org.angmarc.tracker_blocker_browser
+package org.angmarc.tracker_blocker_browser.core
 
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
@@ -10,7 +10,8 @@ interface DispatcherProvider {
     fun default() : CoroutineContext
 }
 
-class DispatcherProviderImpl : DispatcherProvider {
+class DispatcherProviderImpl :
+    DispatcherProvider {
 
     override fun io() = Dispatchers.IO
     override fun main() = Dispatchers.Main

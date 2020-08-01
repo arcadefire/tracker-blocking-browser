@@ -1,0 +1,46 @@
+package org.angmarc.tracker_blocker_browser.di
+
+import android.content.Context
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import dagger.Module
+import dagger.Provides
+import dagger.multibindings.IntoMap
+import dagger.multibindings.StringKey
+import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
+import org.angmarc.tracker_blocker_browser.data.network.TrackersDataService
+import org.angmarc.tracker_blocker_browser.workers.TrackerDataDownloadWorker
+import org.angmarc.tracker_blocker_browser.workers.core.ChildWorkerFactory
+import org.angmarc.tracker_blocker_browser.workers.core.CustomWorkerFactory
+import javax.inject.Singleton
+
+@Module
+object WorkersModule {
+
+    @Provides
+    @IntoMap
+    @StringKey("TrackerDataDownloadWorker")
+    fun provideWorkerFactory(
+        trackersDataService: TrackersDataService,
+        blockedDomainsDao: BlockedDomainsDao
+    ): ChildWorkerFactory {
+        return TrackerDataDownloadWorker.TrackerDataDownloadWorkerFactory(
+            trackersDataService,
+            blockedDomainsDao
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideWorkManager(context: Context): WorkManager = WorkManager.getInstance(context)
+
+    @Provides
+    fun provideWorkManagerConfiguration(
+        customWorkerFactory: CustomWorkerFactory
+    ) : Configuration {
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.INFO)
+            .setWorkerFactory(customWorkerFactory)
+            .build()
+    }
+}

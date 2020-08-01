@@ -1,4 +1,4 @@
-package org.angmarc.tracker_blocker_browser
+package org.angmarc.tracker_blocker_browser.di
 
 import javax.inject.Scope
 

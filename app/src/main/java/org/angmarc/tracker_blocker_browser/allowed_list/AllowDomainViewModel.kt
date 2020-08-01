@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.angmarc.tracker_blocker_browser.DispatcherProvider
-import org.angmarc.tracker_blocker_browser.Event
+import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
+import org.angmarc.tracker_blocker_browser.core.Event
 import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
 import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
@@ -34,7 +34,8 @@ class AllowDomainViewModel @Inject constructor(
             allowedDomainsDao.insert(allowedDomain)
 
             withContext(dispatcherProvider.main()) {
-                _onAllowWebsiteAdded.value = Event(Unit)
+                _onAllowWebsiteAdded.value =
+                    Event(Unit)
             }
         }
     }
