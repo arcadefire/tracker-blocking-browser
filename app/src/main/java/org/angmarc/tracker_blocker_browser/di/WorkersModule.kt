@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import dagger.multibindings.StringKey
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.network.TrackersDataService
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
 import org.angmarc.tracker_blocker_browser.workers.TrackerDataDownloadWorker
 import org.angmarc.tracker_blocker_browser.workers.core.ChildWorkerFactory
 import org.angmarc.tracker_blocker_browser.workers.core.CustomWorkerFactory
@@ -22,11 +23,13 @@ object WorkersModule {
     @StringKey("TrackerDataDownloadWorker")
     fun provideWorkerFactory(
         trackersDataService: TrackersDataService,
-        blockedDomainsDao: BlockedDomainsDao
+        blockedDomainsDao: BlockedDomainsDao,
+        exceptionEventRecorder: ExceptionEventRecorder
     ): ChildWorkerFactory {
         return TrackerDataDownloadWorker.TrackerDataDownloadWorkerFactory(
             trackersDataService,
-            blockedDomainsDao
+            blockedDomainsDao,
+            exceptionEventRecorder
         )
     }
 

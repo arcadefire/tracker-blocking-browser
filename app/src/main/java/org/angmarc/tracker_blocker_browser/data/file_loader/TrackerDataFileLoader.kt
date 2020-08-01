@@ -4,16 +4,19 @@ import android.content.res.Resources
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.R
+import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEvent
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
 import javax.inject.Inject
 
 class TrackerDataFileLoader @Inject constructor(
     private val moshi: Moshi,
     private val resources: Resources,
     private val blockedDomainsDao: BlockedDomainsDao,
+    private val exceptionEventRecorder: ExceptionEventRecorder,
     dispatcherProvider: DispatcherProvider
 ) {
 
@@ -36,7 +39,7 @@ class TrackerDataFileLoader @Inject constructor(
                     blockedDomainsDao.insert(BlockedDomain(domain))
                 }
             } else {
-                // save exception
+                exceptionEventRecorder.record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
             }
         }
     }

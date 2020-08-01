@@ -12,6 +12,7 @@ import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerDataFileLoader
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -23,11 +24,13 @@ internal class TrackerDataFileLoaderTest {
     private val moshi = Moshi.Builder().build()
     private val resources = mock<Resources>()
     private val blockedDomainsDao = mock<BlockedDomainsDao>()
+    private val exceptionEventRecorder = mock<ExceptionEventRecorder>()
 
     private val trackerDataFileLoader = TrackerDataFileLoader(
         moshi,
         resources,
         blockedDomainsDao,
+        exceptionEventRecorder,
         TestDispatcherProvider()
     )
 

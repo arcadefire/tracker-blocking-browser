@@ -15,6 +15,8 @@ import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerInfo
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerOwner
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackersDataFile
 import org.angmarc.tracker_blocker_browser.data.network.TrackersDataService
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEvent
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,12 +32,14 @@ class TrackerDataDownloadWorkerTest {
     private val workerParameters = mock<WorkerParameters>()
     private val trackersDataService = mock<TrackersDataService>()
     private val blockedDomainsDao = mock<BlockedDomainsDao>()
+    private val exceptionEventRecorder = mock<ExceptionEventRecorder>()
 
     private val worker = TrackerDataDownloadWorker(
         ApplicationProvider.getApplicationContext(),
         workerParameters,
         trackersDataService,
-        blockedDomainsDao
+        blockedDomainsDao,
+        exceptionEventRecorder
     )
 
     @Test
@@ -58,6 +62,7 @@ class TrackerDataDownloadWorkerTest {
             val result = worker.doWork()
 
             verifyNoMoreInteractions(blockedDomainsDao)
+            verify(exceptionEventRecorder).record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_REMOTE)
             assertThat(result).isEqualTo(ListenableWorker.Result.failure())
         }
     }

@@ -6,6 +6,8 @@ import kotlinx.coroutines.runBlocking
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.network.TrackersDataService
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEvent
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
 import org.angmarc.tracker_blocker_browser.workers.core.ChildWorkerFactory
 import java.util.concurrent.TimeUnit
 
@@ -13,7 +15,8 @@ class TrackerDataDownloadWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val trackersDataService: TrackersDataService,
-    private val blockedDomainsDao: BlockedDomainsDao
+    private val blockedDomainsDao: BlockedDomainsDao,
+    private val exceptionEventRecorder: ExceptionEventRecorder
 ) : Worker(appContext, workerParams) {
 
     override fun doWork(): Result {
@@ -25,6 +28,7 @@ class TrackerDataDownloadWorker(
                 }
             }
         } catch (exception: Exception) {
+            exceptionEventRecorder.record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_REMOTE)
             return Result.failure()
         }
         return Result.success()
@@ -48,7 +52,8 @@ class TrackerDataDownloadWorker(
 
     class TrackerDataDownloadWorkerFactory(
         private val trackersDataService: TrackersDataService,
-        private val blockedDomainsDao: BlockedDomainsDao
+        private val blockedDomainsDao: BlockedDomainsDao,
+        private val exceptionEventRecorder: ExceptionEventRecorder
     ) : ChildWorkerFactory {
 
         override fun get(
@@ -59,7 +64,8 @@ class TrackerDataDownloadWorker(
                 appContext,
                 workerParams,
                 trackersDataService,
-                blockedDomainsDao
+                blockedDomainsDao,
+                exceptionEventRecorder
             )
         }
     }
