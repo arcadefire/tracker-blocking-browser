@@ -2,13 +2,16 @@ package org.angmarc.tracker_blocker_browser.browser
 
 import android.net.Uri
 import android.webkit.WebResourceRequest
+import org.angmarc.tracker_blocker_browser.data.Analytics
 import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
+import java.lang.Integer.max
 import javax.inject.Inject
 
 class TrackerAnalyzer @Inject constructor(
     private val blockedDomainsDao: BlockedDomainsDao,
-    private val allowedDomainsDao: AllowedDomainsDao
+    private val allowedDomainsDao: AllowedDomainsDao,
+    private val analytics: Analytics
 ) {
 
     private val trackerSet: HashSet<String> by lazy {
@@ -39,6 +42,7 @@ class TrackerAnalyzer @Inject constructor(
 
         if (isTracker) {
             println("$requestHost is a tracker!")
+            analytics.blockedTrackerAmount++
         }
 
         return isTracker
@@ -54,7 +58,7 @@ class TrackerAnalyzer @Inject constructor(
         return if (shouldStopAtDot) {
             buffer
         } else {
-            extractDomain(host.substring(0, index), true) + '.' + buffer
+            extractDomain(host.substring(0, max(0, index)), true) + '.' + buffer
         }
     }
 

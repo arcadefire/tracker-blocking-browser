@@ -13,6 +13,7 @@ class BrowserViewModel : ViewModel() {
 
     val addressBarText = MutableLiveData<String>()
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
+    val statisticsClicks = MutableLiveData<Event<Unit>>()
 
     val url: LiveData<String> = Transformations.map(addressBarText) {
         val address = (it ?: "").trim()
@@ -22,7 +23,11 @@ class BrowserViewModel : ViewModel() {
     fun allowCurrentWebsite() {
         val uri = Uri.parse(HTTP_PREFIX + addressBarText.value.orEmpty())
         if (uri.host.orEmpty().isNotBlank()) {
-            allowWebsiteClicks.postValue(Event(addressBarText.value.orEmpty()))
+            allowWebsiteClicks.value = Event(addressBarText.value.orEmpty())
         }
+    }
+
+    fun viewStatistics() {
+        statisticsClicks.value = Event(Unit)
     }
 }

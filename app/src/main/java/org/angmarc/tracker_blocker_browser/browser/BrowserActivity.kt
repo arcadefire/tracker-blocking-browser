@@ -16,9 +16,11 @@ import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.allowed_list.AllowDomainFragmentDialog
 import org.angmarc.tracker_blocker_browser.databinding.ActivityBrowserBinding
 import org.angmarc.tracker_blocker_browser.extensions.hideKeyboard
+import org.angmarc.tracker_blocker_browser.stats.StatsDialogFragment
 import javax.inject.Inject
 
 private const val FRAGMENT_ADD_TO_ALLOW_LIST = "fragment-add-to-allow-list"
+private const val FRAGMENT_VIEW_STATISTICS = "fragment-view-statistics"
 
 class BrowserActivity : AppCompatActivity() {
 
@@ -73,6 +75,11 @@ class BrowserActivity : AppCompatActivity() {
                 .instance(domainNameToAllow = it)
                 .show(supportFragmentManager, FRAGMENT_ADD_TO_ALLOW_LIST)
         })
+        viewModel.statisticsClicks.observe(this, EventObserver {
+            StatsDialogFragment
+                .instance()
+                .show(supportFragmentManager, FRAGMENT_VIEW_STATISTICS)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -81,8 +88,9 @@ class BrowserActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.allowList) {
-            viewModel.allowCurrentWebsite()
+        when(item.itemId) {
+            R.id.allowList -> viewModel.allowCurrentWebsite()
+            R.id.statistics -> viewModel.viewStatistics()
         }
         return super.onOptionsItemSelected(item)
     }

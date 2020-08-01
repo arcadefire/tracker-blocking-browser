@@ -3,4 +3,5 @@
     <string name="allow_list">Add to allow list</string>
     <string name="statistics">Statistics</string>
     <string name="add">Add</string>
+    <string name="stats_title">Trackers you\'ve blocked so far!</string>
 </resources>
