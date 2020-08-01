@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.angmarc.tracker_blocker_browser.data.Analytics
+import org.angmarc.tracker_blocker_browser.getValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -41,6 +42,6 @@ class StatsViewModelTest {
 
     @Test
     fun `should return the amount of blocked trackers`() {
-        assertThat(viewModel.blockedTrackersAmount.value).isEqualTo(10)
+        assertThat(getValue(viewModel.blockedTrackersAmount)).isEqualTo(10)
     }
 }

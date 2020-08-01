@@ -69,19 +69,14 @@ dependencies {
         exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
     }
 
-    // Instrumentation
-    androidTestImplementation "androidx.test:runner:1.2.0"
-    androidTestImplementation "androidx.test:rules:1.2.0"
-    androidTestImplementation "com.nhaarman:mockito-kotlin:1.5.0"
-    androidTestImplementation "org.mockito:mockito-android:2.28.2"
-    androidTestImplementation "org.assertj:assertj-core:3.12.2"
-
     // Unit tests
     testImplementation 'junit:junit:4.13'
+    testImplementation 'androidx.test:core:1.2.0'
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     testImplementation "org.mockito:mockito-inline:2.21.0"
     testImplementation "org.assertj:assertj-core:3.12.2"
     testImplementation 'android.arch.core:core-testing:1.1.1'
+    testImplementation "org.robolectric:robolectric:4.3.1"
 
     // Background work
     implementation "androidx.work:work-runtime:2.4.0"

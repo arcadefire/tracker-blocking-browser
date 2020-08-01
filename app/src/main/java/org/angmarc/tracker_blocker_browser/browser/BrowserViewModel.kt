@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import org.angmarc.tracker_blocker_browser.core.Event
 
+private const val HTTPS_PREFIX = "https://"
 private const val HTTP_PREFIX = "https://"
 
 class BrowserViewModel : ViewModel() {
@@ -17,7 +18,11 @@ class BrowserViewModel : ViewModel() {
 
     val url: LiveData<String> = Transformations.map(addressBarText) {
         val address = (it ?: "").trim()
-        HTTP_PREFIX + address
+        if (address.startsWith(HTTP_PREFIX) || address.startsWith(HTTPS_PREFIX)) {
+            address
+        } else {
+            HTTPS_PREFIX + address
+        }
     }
 
     fun allowCurrentWebsite() {

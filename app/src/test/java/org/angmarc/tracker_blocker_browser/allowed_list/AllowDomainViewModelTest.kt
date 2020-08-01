@@ -13,6 +13,7 @@ import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
 import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
 import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
 import org.angmarc.tracker_blocker_browser.data.database.BreakageType
+import org.angmarc.tracker_blocker_browser.getValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -68,6 +69,6 @@ internal class AllowDomainViewModelTest {
         val expectedAllowedDomain = AllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
         verify(allowedDomainsDao).insert(expectedAllowedDomain)
 
-        assertThat(viewModel.onAllowWebsiteAdded.value).isNotNull
+        assertThat(getValue(viewModel.onAllowWebsiteAdded).peekContent()).isNotNull
     }
 }

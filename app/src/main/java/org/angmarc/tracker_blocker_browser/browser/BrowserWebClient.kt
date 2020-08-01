@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class BrowserWebClient @Inject constructor(
-    private val trackerAnalyzer: TrackerAnalyzer
+    private val requestAnalyzer: RequestAnalyzer
 ) : WebViewClient() {
 
     override fun shouldInterceptRequest(
@@ -18,13 +18,13 @@ class BrowserWebClient @Inject constructor(
         request: WebResourceRequest
     ): WebResourceResponse? {
         // This callback is executed on a background thread,
-        // while WebView must be access on its render/main thread
+        // while WebView must be accessed on its render/main thread
         val rootUrl: String = runBlocking {
             withContext(Dispatchers.Main) {
                 view.url ?: ""
             }
         }
-        return if (trackerAnalyzer.shouldBlockRequest(rootUrl, request)) {
+        return if (requestAnalyzer.shouldBlockRequest(rootUrl, request)) {
             WebResourceResponse(null, null, null)
         } else {
             null

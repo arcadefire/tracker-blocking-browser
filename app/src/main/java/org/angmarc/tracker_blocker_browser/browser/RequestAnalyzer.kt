@@ -8,7 +8,7 @@ import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
 import java.lang.Integer.max
 import javax.inject.Inject
 
-class TrackerAnalyzer @Inject constructor(
+class RequestAnalyzer @Inject constructor(
     private val blockedDomainsDao: BlockedDomainsDao,
     private val allowedDomainsDao: AllowedDomainsDao,
     private val analytics: Analytics
@@ -27,7 +27,7 @@ class TrackerAnalyzer @Inject constructor(
         val rootHost = Uri.parse(webViewUrl).host.orEmpty()
         val requestHost = request.url.host.orEmpty()
 
-        // This site has been whitelisted
+        // This site has been added to the list of allowed websites
         if (allowedDomainsDao.find(rootHost) != null) {
             return false
         }
