@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
+
+    <item
+        android:id="@+id/allowList"
+        android:title="@string/allow_list"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/statistics"
+        android:title="@string/statistics"
+        app:showAsAction="never" />
+</menu>

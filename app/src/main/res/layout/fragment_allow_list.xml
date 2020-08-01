@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="org.angmarc.tracker_blocker_browser.allowed_list.Reasons" />
+
+        <variable
+            name="viewmodel"
+            type="org.angmarc.tracker_blocker_browser.allowed_list.AllowListViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.VIDEOS_DONT_LOAD)}"
+                        android:text="Video don't load" />
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.IMAGES_DONT_LOAD)}"
+                        android:text="Images don't load" />
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.MISSING_COMMENTS)}"
+                        android:text="Missing comments" />
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.MISSING_CONTENTS)}"
+                        android:text="Contents are missing" />
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.BROKEN_NAVIGATION)}"
+                        android:text="Navigation is broken" />
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.UNABLE_TO_LOGIN)}"
+                        android:text="Unable to log in" />
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:onClick="@{() -> viewmodel.userChoseReason(Reasons.PAYWALL)}"
+                        android:text="Ask to disable the blocker (paywall)" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add"
+                android:layout_gravity="end"/>
+        </LinearLayout>
+    </ScrollView>
+</layout>
