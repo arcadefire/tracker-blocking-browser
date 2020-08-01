@@ -20,7 +20,7 @@ class BrowserViewModel : ViewModel() {
     }
 
     fun allowCurrentWebsite() {
-        val uri = Uri.parse(addressBarText.value.orEmpty())
+        val uri = Uri.parse(HTTP_PREFIX + addressBarText.value.orEmpty())
         if (uri.host.orEmpty().isNotBlank()) {
             allowWebsiteClicks.postValue(Event(addressBarText.value.orEmpty()))
         }

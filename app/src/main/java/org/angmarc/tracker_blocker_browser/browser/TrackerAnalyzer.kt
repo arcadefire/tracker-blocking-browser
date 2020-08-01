@@ -21,17 +21,17 @@ class TrackerAnalyzer @Inject constructor(
     }
 
     fun shouldBlockRequest(webViewUrl: String, request: WebResourceRequest): Boolean {
-        val rootUri = Uri.parse(webViewUrl)
+        val rootHost = Uri.parse(webViewUrl).host.orEmpty()
         val requestHost = request.url.host.orEmpty()
 
         // This site has been whitelisted
-        if (allowedDomainsDao.find(rootUri.host.orEmpty()) != null) {
+        if (allowedDomainsDao.find(rootHost) != null) {
             return false
         }
 
         // No need to block if the url being loaded is a subdomain of the one
         // typed in the address bar
-        if (isSubdomain(webViewUrl, requestHost)) {
+        if (isSubdomain(rootHost, requestHost)) {
             return false
         }
 
