@@ -60,7 +60,9 @@ class BrowserActivity : AppCompatActivity() {
         }
 
         viewModel.state.observe(this, Observer {
-            binding.webView.loadUrl(it.urlToLoad)
+            it.urlToLoad?.let { urlToLoad ->
+                binding.webView.loadUrl(urlToLoad)
+            }
             if (it.shouldSuspendBlocking) {
                 binding.addressInputLayout.setStartIconDrawable(R.drawable.ic_remove_circle_outline_24px)
             } else {

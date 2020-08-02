@@ -1,5 +1,6 @@
 package org.angmarc.tracker_blocker_browser.data
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.data.database.*
@@ -10,6 +11,8 @@ class TrackersRepository @Inject constructor(
     private val allowedDomainsDao: AllowedDomainsDao,
     private val dispatcherProvider: DispatcherProvider
 ) {
+
+    fun allowedDomainsFlow(): Flow<List<AllowedDomain>> = allowedDomainsDao.allowedDomains()
 
     suspend fun trackerDomainNamesSet(): Set<String> {
         return withContext(dispatcherProvider.io()) {

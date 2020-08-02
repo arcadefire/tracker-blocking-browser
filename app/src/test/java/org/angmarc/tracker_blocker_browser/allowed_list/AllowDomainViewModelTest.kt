@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
@@ -44,27 +45,30 @@ internal class AllowDomainViewModelTest {
     }
 
     @Test
-    fun `should save the allowed website with the selected breakage-type when the add button is clicked`() {
-        viewModel.selectedRadio.value = R.id.navigationButton
+    fun `should save the allowed website with the selected breakage-type when the add button is clicked`() =
+        runBlockingTest {
+            viewModel.selectedRadio.value = R.id.navigationButton
 
-        viewModel.addAllowedDomain()
+            viewModel.addAllowedDomain()
 
-        verify(repository).addAllowedDomain("a domain", BreakageType.BROKEN_NAVIGATION)
-    }
-
-    @Test
-    fun `should save the allowed website with the default breakage-type when the add button is clicked`() {
-        viewModel.addAllowedDomain()
-
-        verify(repository).addAllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
-    }
+            verify(repository).addAllowedDomain("a domain", BreakageType.BROKEN_NAVIGATION)
+        }
 
     @Test
-    fun `should signal the view that the domain has been added, when the database insertion is completed`() {
-        viewModel.addAllowedDomain()
+    fun `should save the allowed website with the default breakage-type when the add button is clicked`() =
+        runBlockingTest {
+            viewModel.addAllowedDomain()
 
-        verify(repository).addAllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
+            verify(repository).addAllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
+        }
 
-        assertThat(getValue(viewModel.onAllowWebsiteAdded).peekContent()).isNotNull
-    }
+    @Test
+    fun `should signal the view that the domain has been added, when the database insertion is completed`() =
+        runBlockingTest {
+            viewModel.addAllowedDomain()
+
+            verify(repository).addAllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
+
+            assertThat(getValue(viewModel.onAllowWebsiteAdded).peekContent()).isNotNull
+        }
 }

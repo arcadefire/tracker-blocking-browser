@@ -1,21 +1,20 @@
 package org.angmarc.tracker_blocker_browser.browser
 
 import android.net.Uri
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.core.Event
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
+import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
 import javax.inject.Inject
 
 private const val HTTPS_PREFIX = "https://"
 private const val HTTP_PREFIX = "http://"
 
-data class BrowserState(val urlToLoad: String, val shouldSuspendBlocking: Boolean)
+data class BrowserState(val urlToLoad: String?, val shouldSuspendBlocking: Boolean)
 
 class BrowserViewModel @Inject constructor(
     private val repository: TrackersRepository,
@@ -23,10 +22,14 @@ class BrowserViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val coroutineScope = CoroutineScope(dispatcherProvider.io())
+    private val allowedDomainsList = liveData<List<AllowedDomain>> {
+        emitSource(repository.allowedDomainsFlow().asLiveData())
+    }
 
     val addressBarText = MutableLiveData<String>()
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
     val statisticsClicks = MutableLiveData<Event<Unit>>()
+
     val state = MediatorLiveData<BrowserState>().apply {
         addSource(addressBarText) { address ->
             coroutineScope.launch(dispatcherProvider.io()) {
@@ -36,6 +39,13 @@ class BrowserViewModel @Inject constructor(
                 withContext(dispatcherProvider.main()) {
                     value = BrowserState(urlToLoad, shouldSuspendBlocking)
                 }
+            }
+        }
+        addSource(allowedDomainsList) {
+            val foundDomain =
+                it.firstOrNull { allowedDomain -> allowedDomain.domain == addressBarText.value }
+            if (foundDomain != null) {
+                value = BrowserState(null, true)
             }
         }
     }

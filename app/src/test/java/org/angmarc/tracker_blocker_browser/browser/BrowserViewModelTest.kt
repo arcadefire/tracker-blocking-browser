@@ -7,6 +7,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
@@ -14,6 +15,8 @@ import kotlinx.coroutines.test.setMain
 import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
 import org.angmarc.tracker_blocker_browser.core.Event
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
+import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
+import org.angmarc.tracker_blocker_browser.data.database.BreakageType
 import org.angmarc.tracker_blocker_browser.getValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -45,24 +48,26 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun `should add http prefix if it's missing, when the user confirms the address`() = runBlockingTest {
-        whenever(repository.isDomainInAllowedList(any())).doReturn(false)
+    fun `should add http prefix if it's missing, when the user confirms the address`() =
+        runBlockingTest {
+            whenever(repository.isDomainInAllowedList(any())).doReturn(false)
 
-        browserViewModel.addressBarText.value = "techcrunch.com"
+            browserViewModel.addressBarText.value = "techcrunch.com"
 
-        assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
-        assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
-    }
+            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
+            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+        }
 
     @Test
-    fun `should not add http prefix if it's present, when the user confirms the address`() = runBlockingTest {
-        whenever(repository.isDomainInAllowedList(any())).doReturn(false)
+    fun `should not add http prefix if it's present, when the user confirms the address`() =
+        runBlockingTest {
+            whenever(repository.isDomainInAllowedList(any())).doReturn(false)
 
-        browserViewModel.addressBarText.value = "https://techcrunch.com"
+            browserViewModel.addressBarText.value = "https://techcrunch.com"
 
-        assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
-        assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
-    }
+            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
+            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+        }
 
     @Test
     fun `should trim space before and after the typed address`() = runBlockingTest {
@@ -75,13 +80,14 @@ class BrowserViewModelTest {
     }
 
     @Test
-    fun `should return the expected state when the user visits an allowed website`() = runBlockingTest {
-        whenever(repository.isDomainInAllowedList(any())).doReturn(true)
+    fun `should return the expected state when the user visits an allowed website`() =
+        runBlockingTest {
+            whenever(repository.isDomainInAllowedList(any())).doReturn(true)
 
-        browserViewModel.addressBarText.value = "https://techcrunch.com"
+            browserViewModel.addressBarText.value = "https://techcrunch.com"
 
-        assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(true)
-    }
+            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(true)
+        }
 
     @Test
     fun `should handle the click event, when the user wants to put the current website to the allowed list`() {
@@ -102,4 +108,25 @@ class BrowserViewModelTest {
         val event: Event<Unit> = getValue(browserViewModel.statisticsClicks)
         assertThat(event).isNotNull
     }
+
+    @Test
+    fun `should emit a new state when the current site is flagged as an allowed domain`() =
+        runBlockingTest {
+            whenever(repository.allowedDomainsFlow()).doReturn(
+                flow {
+                    emit(
+                        listOf(
+                            AllowedDomain(
+                                "https://techcrunch.com",
+                                BreakageType.VIDEOS_DONT_LOAD
+                            )
+                        )
+                    )
+                }
+            )
+
+            browserViewModel.addressBarText.value = "https://techcrunch.com"
+
+            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isTrue()
+        }
 }
