@@ -5,4 +5,5 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="textColorOnDark">#FDFFFF</color>
     <color name="colorSurfaceDark">#087E8B</color>
+    <color name="addressBarDefaultBackgroundColor">#087E8B</color>
 </resources>

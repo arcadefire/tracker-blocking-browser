@@ -5,15 +5,13 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
-import org.angmarc.tracker_blocker_browser.core.EventObserver
+import androidx.lifecycle.ViewModelProvider
 import org.angmarc.tracker_blocker_browser.R
+import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
 import org.angmarc.tracker_blocker_browser.allowed_list.AllowDomainFragmentDialog
+import org.angmarc.tracker_blocker_browser.core.EventObserver
 import org.angmarc.tracker_blocker_browser.databinding.ActivityBrowserBinding
 import org.angmarc.tracker_blocker_browser.extensions.hideKeyboard
 import org.angmarc.tracker_blocker_browser.stats.StatsDialogFragment
@@ -29,7 +27,12 @@ class BrowserActivity : AppCompatActivity() {
     @Inject
     lateinit var webClient: BrowserWebClient
 
-    private val viewModel: BrowserViewModel by viewModels()
+    @Inject
+    lateinit var viewModelProvider: ViewModelProvider
+
+    private val viewModel: BrowserViewModel by lazy {
+        viewModelProvider.get(BrowserViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,7 @@ class BrowserActivity : AppCompatActivity() {
         DaggerBrowserActivityComponent
             .builder()
             .applicationComponent((application as TrackerBlockingApplication).applicationComponent)
+            .viewModelStoreOwner(this)
             .build()
             .inject(this)
 
@@ -46,28 +50,22 @@ class BrowserActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        val webView = findViewById<WebView>(R.id.webView)
-        webView.settings.apply {
-            javaScriptEnabled = true
-            loadWithOverviewMode = true
-            useWideViewPort = true
-            builtInZoomControls = true
-            displayZoomControls = false
-            setSupportMultipleWindows(true)
-            setSupportZoom(true)
-        }
-        webView.webViewClient = webClient
-        webView.webChromeClient = WebChromeClient()
+        configureWebView()
 
-        binding.addressInput.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.addressInput.setOnEditorActionListener { _, _, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN) {
                 viewModel.addressBarText.value = binding.addressInput.text.toString()
             }
             true
         }
 
-        viewModel.url.observe(this, Observer {
-            webView.loadUrl(it)
+        viewModel.state.observe(this, Observer {
+            binding.webView.loadUrl(it.urlToLoad)
+            if (it.shouldSuspendBlocking) {
+                binding.addressInputLayout.setStartIconDrawable(R.drawable.ic_remove_circle_outline_24px)
+            } else {
+                binding.addressInputLayout.startIconDrawable = null
+            }
             hideKeyboard()
         })
         viewModel.allowWebsiteClicks.observe(this,
@@ -84,13 +82,28 @@ class BrowserActivity : AppCompatActivity() {
             })
     }
 
+    private fun configureWebView() {
+        with(binding.webView) {
+            settings.apply {
+                javaScriptEnabled = true
+                loadWithOverviewMode = true
+                useWideViewPort = true
+                builtInZoomControls = true
+                displayZoomControls = false
+                setSupportMultipleWindows(true)
+                setSupportZoom(true)
+            }
+            webViewClient = webClient
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.browser_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.allowList -> viewModel.allowCurrentWebsite()
             R.id.statistics -> viewModel.viewStatistics()
         }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
@@ -46,10 +47,11 @@ internal class TrackerDataFileLoaderTest {
     }
 
     @Test
-    fun `should load the trackers data file from disk at the app's boot, when the storage is empty`() {
-        whenever(repository.isTrackerListEmpty()).thenReturn(true)
-        whenever(resources.openRawResource(any())).thenReturn(
-            """
+    fun `should load the trackers data file from disk at the app's boot, when the storage is empty`() =
+        runBlockingTest {
+            whenever(repository.isTrackerListEmpty()).thenReturn(true)
+            whenever(resources.openRawResource(any())).thenReturn(
+                """
                 {
                     "trackers": {
                         "01net.com": {
@@ -67,30 +69,32 @@ internal class TrackerDataFileLoaderTest {
                     }
                 }
             """.trimIndent().byteInputStream(StandardCharsets.UTF_8)
-        )
+            )
 
-        trackerDataFileLoader.loadData()
+            trackerDataFileLoader.loadData()
 
-        verify(repository).addBlockedDomain("01net.com")
-    }
-
-    @Test
-    fun `should not load anything at the app's boot, when the storage contains trackers definitions`() {
-        whenever(repository.isTrackerListEmpty()).thenReturn(false)
-
-        trackerDataFileLoader.loadData()
-
-        verify(repository).isTrackerListEmpty()
-        verifyNoMoreInteractions(repository)
-    }
+            verify(repository).addBlockedDomain("01net.com")
+        }
 
     @Test
-    fun `should record the exception while loading the trackers file from the disk`() {
-        whenever(repository.isTrackerListEmpty()).thenReturn(true)
-        whenever(resources.openRawResource(any())).thenThrow(NotFoundException())
+    fun `should not load anything at the app's boot, when the storage contains trackers definitions`() =
+        runBlockingTest {
+            whenever(repository.isTrackerListEmpty()).thenReturn(false)
 
-        trackerDataFileLoader.loadData()
+            trackerDataFileLoader.loadData()
 
-        verify(exceptionEventRecorder).record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
-    }
+            verify(repository).isTrackerListEmpty()
+            verifyNoMoreInteractions(repository)
+        }
+
+    @Test
+    fun `should record the exception while loading the trackers file from the disk`() =
+        runBlockingTest {
+            whenever(repository.isTrackerListEmpty()).thenReturn(true)
+            whenever(resources.openRawResource(any())).thenThrow(NotFoundException())
+
+            trackerDataFileLoader.loadData()
+
+            verify(exceptionEventRecorder).record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
+        }
 }

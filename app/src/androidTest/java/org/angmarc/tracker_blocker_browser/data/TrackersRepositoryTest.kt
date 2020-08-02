@@ -49,7 +49,7 @@ class TrackersRepositoryTest {
     fun shouldStoredAnAllowedDomain() {
         repository.addAllowedDomain(DOMAIN_NAME, breakageType = BreakageType.VIDEOS_DONT_LOAD)
 
-        assertThat(repository.isDomainAllowed(DOMAIN_NAME)).isEqualTo(true)
+        assertThat(repository.isDomainInAllowedList(DOMAIN_NAME)).isEqualTo(true)
     }
 
     @Test

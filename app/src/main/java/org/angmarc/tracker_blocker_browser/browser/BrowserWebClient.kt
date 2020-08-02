@@ -7,13 +7,14 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import javax.inject.Inject
 
 class BrowserWebClient @Inject constructor(
-    private val requestAnalyzer: RequestAnalyzer
+    private val requestAnalyzer: RequestAnalyzer,
+    private val dispatcherProvider: DispatcherProvider
 ) : WebViewClient() {
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
@@ -34,15 +35,15 @@ class BrowserWebClient @Inject constructor(
     ): WebResourceResponse? {
         // This callback is executed on a background thread,
         // while WebView must be accessed on its render/main thread
-        val rootUrl: String = runBlocking {
-            withContext(Dispatchers.Main) {
+        return runBlocking {
+            val rootUrl = withContext(dispatcherProvider.main()) {
                 view.url ?: ""
             }
-        }
-        return if (requestAnalyzer.shouldBlockRequest(rootUrl, requestUri)) {
-            WebResourceResponse(null, null, null)
-        } else {
-            null
+            if (requestAnalyzer.shouldBlockRequest(rootUrl, requestUri)) {
+                WebResourceResponse(null, null, null)
+            } else {
+                null
+            }
         }
     }
 }

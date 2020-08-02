@@ -7,7 +7,6 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import org.angmarc.tracker_blocker_browser.data.Analytics
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
-import java.lang.Integer.max
 import javax.inject.Inject
 
 class RequestAnalyzer @Inject constructor(
@@ -15,23 +14,25 @@ class RequestAnalyzer @Inject constructor(
     private val analytics: Analytics
 ) {
 
-    private val trackerSet: Set<String> by lazy {
-        repository.trackerDomainNamesSet()
-    }
+    private lateinit var trackerSet: Set<String>
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @WorkerThread
-    fun shouldBlockRequest(webViewUrl: String, request: WebResourceRequest): Boolean {
+    suspend fun shouldBlockRequest(webViewUrl: String, request: WebResourceRequest): Boolean {
         return shouldBlockRequest(webViewUrl, request.url)
     }
 
     @WorkerThread
-    fun shouldBlockRequest(webViewUrl: String, requestUri: Uri): Boolean {
+    suspend fun shouldBlockRequest(webViewUrl: String, requestUri: Uri): Boolean {
         val rootHost = Uri.parse(webViewUrl).host.orEmpty()
         val requestHost = requestUri.host.orEmpty()
 
+        if (!this::trackerSet.isInitialized) {
+            trackerSet = repository.trackerDomainNamesSet()
+        }
+
         // This site has been added to the list of allowed websites
-        if (repository.isDomainAllowed(rootHost)) {
+        if (repository.isDomainInAllowedList(rootHost)) {
             return false
         }
 
@@ -49,20 +50,6 @@ class RequestAnalyzer @Inject constructor(
         }
 
         return isTracker
-    }
-
-    private fun extractDomain(host: String, shouldStopAtDot: Boolean = false): String {
-        var index = host.length - 1
-        var buffer = ""
-        while (index >= 0 && host[index] != '.') {
-            buffer = host[index] + buffer
-            index--
-        }
-        return if (shouldStopAtDot) {
-            buffer
-        } else {
-            extractDomain(host.substring(0, max(0, index)), true) + '.' + buffer
-        }
     }
 
     private fun isSubdomain(webViewUrl: String, internalUrl: String): Boolean {
