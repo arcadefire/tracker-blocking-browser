@@ -8,7 +8,7 @@ import org.angmarc.tracker_blocker_browser.di.ViewModelStoreOwnerBuilder
 @ActivityScope
 @Component(
     dependencies = [ApplicationComponent::class],
-    modules = [BrowserModule::class]
+    modules = [BrowserActivityModule::class]
 )
 interface BrowserActivityComponent {
 

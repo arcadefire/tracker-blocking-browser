@@ -10,8 +10,7 @@ interface DispatcherProvider {
     fun default() : CoroutineContext
 }
 
-class DispatcherProviderImpl :
-    DispatcherProvider {
+class DispatcherProviderImpl : DispatcherProvider {
 
     override fun io() = Dispatchers.IO
     override fun main() = Dispatchers.Main

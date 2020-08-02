@@ -1,10 +1,9 @@
 package org.angmarc.tracker_blocker_browser.stats
 
-import androidx.lifecycle.ViewModelStoreOwner
-import dagger.BindsInstance
 import dagger.Component
 import org.angmarc.tracker_blocker_browser.di.ActivityScope
 import org.angmarc.tracker_blocker_browser.di.ApplicationComponent
+import org.angmarc.tracker_blocker_browser.di.ViewModelStoreOwnerBuilder
 
 @ActivityScope
 @Component(
@@ -16,10 +15,7 @@ interface StatsComponent {
     fun inject(fragment: StatsDialogFragment)
 
     @Component.Builder
-    interface Builder {
-
-        @BindsInstance
-        fun viewModelStoreOwner(owner: ViewModelStoreOwner) : Builder
+    interface Builder : ViewModelStoreOwnerBuilder<Builder> {
 
         fun applicationComponent(applicationComponent: ApplicationComponent) : Builder
 

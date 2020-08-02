@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-object BrowserModule {
+object BrowserActivityModule {
 
     @Provides
     fun provideViewModelProvider(
