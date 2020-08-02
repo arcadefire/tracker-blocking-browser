@@ -6,7 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.angmarc.tracker_blocker_browser.data.Analytics
-import org.angmarc.tracker_blocker_browser.data.database.*
+import org.angmarc.tracker_blocker_browser.data.TrackersRepository
+import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
+import org.angmarc.tracker_blocker_browser.data.database.BreakageType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,12 +25,11 @@ internal class RequestAnalyzerTest {
         domain = WEBVIEW_DOMAIN_URL,
         breakageType = BreakageType.VIDEOS_DONT_LOAD
     )
-    private val blockedDomainsDao = mock<BlockedDomainsDao>()
-    private val allowedDomainsDao = mock<AllowedDomainsDao>()
+    private val repository = mock<TrackersRepository>()
     private val analytics = Analytics(
         context = ApplicationProvider.getApplicationContext()
     )
-    private val requestAnalyzer = RequestAnalyzer(blockedDomainsDao, allowedDomainsDao, analytics)
+    private val requestAnalyzer = RequestAnalyzer(repository, analytics)
 
     @Test
     fun `should not block request when it is from a subdomain`() {
@@ -44,8 +45,8 @@ internal class RequestAnalyzerTest {
     fun `should block request when it is from a tracker`() {
         val request = mock<WebResourceRequest>()
         whenever(request.url).thenReturn(Uri.parse("http://www.abc.ugly-tracker.com"))
-        whenever(blockedDomainsDao.trackerList()).thenReturn(
-            listOf(BlockedDomain(domain = TRACKER_DOMAIN_URL))
+        whenever(repository.trackerDomainNamesSet()).thenReturn(
+            setOf(TRACKER_DOMAIN_URL)
         )
 
         val shouldBlock = requestAnalyzer.shouldBlockRequest(WEBVIEW_DOMAIN_URL, request)
@@ -57,8 +58,8 @@ internal class RequestAnalyzerTest {
     fun `should block request when it is from a tracker and it doesn't have a "www" prefix`() {
         val request = mock<WebResourceRequest>()
         whenever(request.url).thenReturn(Uri.parse("http://abc.ugly-tracker.com"))
-        whenever(blockedDomainsDao.trackerList()).thenReturn(
-            listOf(BlockedDomain(domain = TRACKER_DOMAIN_URL))
+        whenever(repository.trackerDomainNamesSet()).thenReturn(
+            setOf(TRACKER_DOMAIN_URL)
         )
 
         val shouldBlock = requestAnalyzer.shouldBlockRequest(WEBVIEW_DOMAIN_URL, request)
@@ -70,8 +71,8 @@ internal class RequestAnalyzerTest {
     fun `should increment the analytics counter when a tracker is blocked`() {
         val request = mock<WebResourceRequest>()
         whenever(request.url).thenReturn(Uri.parse("http://abc.ugly-tracker.com"))
-        whenever(blockedDomainsDao.trackerList()).thenReturn(
-            listOf(BlockedDomain(domain = TRACKER_DOMAIN_URL))
+        whenever(repository.trackerDomainNamesSet()).thenReturn(
+            setOf(TRACKER_DOMAIN_URL)
         )
 
         requestAnalyzer.shouldBlockRequest(WEBVIEW_DOMAIN_URL, request)
@@ -83,10 +84,10 @@ internal class RequestAnalyzerTest {
     fun `should not block if the request is coming from an allowed website`() {
         val request = mock<WebResourceRequest>()
         whenever(request.url).thenReturn(Uri.parse("http://abc.ugly-tracker.com"))
-        whenever(blockedDomainsDao.trackerList()).thenReturn(
-            listOf(BlockedDomain(domain = TRACKER_DOMAIN_URL))
+        whenever(repository.trackerDomainNamesSet()).thenReturn(
+            setOf(TRACKER_DOMAIN_URL)
         )
-        whenever(allowedDomainsDao.find(WEBVIEW_DOMAIN_URL)).thenReturn(allowedDomain)
+        whenever(repository.isDomainAllowed(WEBVIEW_DOMAIN_URL)).thenReturn(true)
 
         val shouldBlock = requestAnalyzer.shouldBlockRequest(WEBVIEW_DOMAIN_URL, request)
 

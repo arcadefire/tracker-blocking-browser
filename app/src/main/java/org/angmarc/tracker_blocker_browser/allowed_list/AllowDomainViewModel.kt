@@ -6,17 +6,16 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.core.Event
-import org.angmarc.tracker_blocker_browser.R
-import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
-import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
+import org.angmarc.tracker_blocker_browser.data.TrackersRepository
 import org.angmarc.tracker_blocker_browser.data.database.BreakageType
 import javax.inject.Inject
 
 class AllowDomainViewModel @Inject constructor(
     private val domainNameToAllow: String,
-    private val allowedDomainsDao: AllowedDomainsDao,
+    private val repository: TrackersRepository,
     private val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
 
@@ -27,11 +26,7 @@ class AllowDomainViewModel @Inject constructor(
 
     fun addAllowedDomain() {
         CoroutineScope(dispatcherProvider.io()).launch {
-            val allowedDomain = AllowedDomain(
-                domain = domainNameToAllow,
-                breakageType = toBreakageType(selectedRadio.value)
-            )
-            allowedDomainsDao.insert(allowedDomain)
+            repository.addAllowedDomain(domainNameToAllow, toBreakageType(selectedRadio.value))
 
             withContext(dispatcherProvider.main()) {
                 _onAllowWebsiteAdded.value =

@@ -1,6 +1,7 @@
 package org.angmarc.tracker_blocker_browser.browser.file_loader
 
 import android.content.res.Resources
+import android.content.res.Resources.NotFoundException
 import com.nhaarman.mockito_kotlin.*
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
@@ -9,9 +10,9 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
-import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
-import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
+import org.angmarc.tracker_blocker_browser.data.TrackersRepository
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerDataFileLoader
+import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEvent
 import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
 import org.junit.After
 import org.junit.Before
@@ -23,13 +24,13 @@ internal class TrackerDataFileLoaderTest {
 
     private val moshi = Moshi.Builder().build()
     private val resources = mock<Resources>()
-    private val blockedDomainsDao = mock<BlockedDomainsDao>()
+    private val repository = mock<TrackersRepository>()
     private val exceptionEventRecorder = mock<ExceptionEventRecorder>()
 
     private val trackerDataFileLoader = TrackerDataFileLoader(
         moshi,
         resources,
-        blockedDomainsDao,
+        repository,
         exceptionEventRecorder,
         TestDispatcherProvider()
     )
@@ -45,8 +46,8 @@ internal class TrackerDataFileLoaderTest {
     }
 
     @Test
-    fun shouldLoadTrackersFileData_whenSQLTableIsEmpty() {
-        whenever(blockedDomainsDao.blockedDomainsNumber()).thenReturn(0)
+    fun `should load the trackers data file from disk at the app's boot, when the storage is empty`() {
+        whenever(repository.isTrackerListEmpty()).thenReturn(true)
         whenever(resources.openRawResource(any())).thenReturn(
             """
                 {
@@ -70,16 +71,26 @@ internal class TrackerDataFileLoaderTest {
 
         trackerDataFileLoader.loadData()
 
-        verify(blockedDomainsDao).insert(BlockedDomain("01net.com"))
+        verify(repository).addBlockedDomain("01net.com")
     }
 
     @Test
-    fun shouldNotLoadTrackersFileData_whenSQLTableIsNotEmpty() {
-        whenever(blockedDomainsDao.blockedDomainsNumber()).thenReturn(1)
+    fun `should not load anything at the app's boot, when the storage contains trackers definitions`() {
+        whenever(repository.isTrackerListEmpty()).thenReturn(false)
 
         trackerDataFileLoader.loadData()
 
-        verify(blockedDomainsDao).blockedDomainsNumber()
-        verifyNoMoreInteractions(blockedDomainsDao)
+        verify(repository).isTrackerListEmpty()
+        verifyNoMoreInteractions(repository)
+    }
+
+    @Test
+    fun `should record the exception while loading the trackers file from the disk`() {
+        whenever(repository.isTrackerListEmpty()).thenReturn(true)
+        whenever(resources.openRawResource(any())).thenThrow(NotFoundException())
+
+        trackerDataFileLoader.loadData()
+
+        verify(exceptionEventRecorder).record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
     }
 }

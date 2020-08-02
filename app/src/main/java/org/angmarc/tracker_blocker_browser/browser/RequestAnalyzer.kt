@@ -2,33 +2,28 @@ package org.angmarc.tracker_blocker_browser.browser
 
 import android.net.Uri
 import android.webkit.WebResourceRequest
+import androidx.annotation.WorkerThread
 import org.angmarc.tracker_blocker_browser.data.Analytics
-import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
-import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
+import org.angmarc.tracker_blocker_browser.data.TrackersRepository
 import java.lang.Integer.max
 import javax.inject.Inject
 
 class RequestAnalyzer @Inject constructor(
-    private val blockedDomainsDao: BlockedDomainsDao,
-    private val allowedDomainsDao: AllowedDomainsDao,
+    private val repository: TrackersRepository,
     private val analytics: Analytics
 ) {
 
-    private val trackerSet: HashSet<String> by lazy {
-        val trackers = blockedDomainsDao.trackerList()
-        val set = HashSet<String>()
-        trackers.forEach {
-            set.add(it.domain)
-        }
-        set
+    private val trackerSet: Set<String> by lazy {
+        repository.trackerDomainNamesSet()
     }
 
+    @WorkerThread
     fun shouldBlockRequest(webViewUrl: String, request: WebResourceRequest): Boolean {
         val rootHost = Uri.parse(webViewUrl).host.orEmpty()
         val requestHost = request.url.host.orEmpty()
 
         // This site has been added to the list of allowed websites
-        if (allowedDomainsDao.find(rootHost) != null) {
+        if (repository.isDomainAllowed(rootHost)) {
             return false
         }
 

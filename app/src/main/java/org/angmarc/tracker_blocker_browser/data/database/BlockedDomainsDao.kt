@@ -9,7 +9,7 @@ import androidx.room.Query
 interface BlockedDomainsDao {
 
     @Query("SELECT COUNT(*) from blocked_domains")
-    fun blockedDomainsNumber(): Long
+    fun blockedDomainsNumber(): Int
 
     @Query("SELECT * FROM blocked_domains")
     fun trackerList(): List<BlockedDomain>

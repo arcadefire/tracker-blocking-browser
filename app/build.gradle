@@ -86,4 +86,11 @@ dependencies {
     // Networking
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+
+    // Instrumentation
+    androidTestImplementation "androidx.test:runner:1.2.0"
+    androidTestImplementation "androidx.test:rules:1.2.0"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    androidTestImplementation "org.assertj:assertj-core:3.12.2"
 }

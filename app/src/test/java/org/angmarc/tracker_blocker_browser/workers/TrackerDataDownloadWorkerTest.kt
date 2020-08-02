@@ -9,8 +9,7 @@ import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
-import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
+import org.angmarc.tracker_blocker_browser.data.TrackersRepository
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerInfo
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerOwner
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackersDataFile
@@ -31,14 +30,14 @@ class TrackerDataDownloadWorkerTest {
     private val trackerInfo = TrackerInfo("a domain", TrackerOwner("owner", "display name"))
     private val workerParameters = mock<WorkerParameters>()
     private val trackersDataService = mock<TrackersDataService>()
-    private val blockedDomainsDao = mock<BlockedDomainsDao>()
+    private val repository = mock<TrackersRepository>()
     private val exceptionEventRecorder = mock<ExceptionEventRecorder>()
 
     private val worker = TrackerDataDownloadWorker(
         ApplicationProvider.getApplicationContext(),
         workerParameters,
         trackersDataService,
-        blockedDomainsDao,
+        repository,
         exceptionEventRecorder
     )
 
@@ -49,7 +48,7 @@ class TrackerDataDownloadWorkerTest {
                 .thenReturn(TrackersDataFile(mapOf(TRACKER_DOMAIN_NAME to trackerInfo)))
             val result = worker.doWork()
 
-            verify(blockedDomainsDao).insert(BlockedDomain(TRACKER_DOMAIN_NAME))
+            verify(repository).addBlockedDomain(TRACKER_DOMAIN_NAME)
             assertThat(result).isEqualTo(ListenableWorker.Result.success())
         }
     }
@@ -61,7 +60,7 @@ class TrackerDataDownloadWorkerTest {
 
             val result = worker.doWork()
 
-            verifyNoMoreInteractions(blockedDomainsDao)
+            verifyNoMoreInteractions(repository)
             verify(exceptionEventRecorder).record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_REMOTE)
             assertThat(result).isEqualTo(ListenableWorker.Result.failure())
         }

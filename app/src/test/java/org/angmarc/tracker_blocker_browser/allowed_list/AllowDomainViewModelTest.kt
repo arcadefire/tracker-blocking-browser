@@ -10,8 +10,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
-import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
-import org.angmarc.tracker_blocker_browser.data.database.AllowedDomainsDao
+import org.angmarc.tracker_blocker_browser.data.TrackersRepository
 import org.angmarc.tracker_blocker_browser.data.database.BreakageType
 import org.angmarc.tracker_blocker_browser.getValue
 import org.assertj.core.api.Assertions.assertThat
@@ -26,11 +25,11 @@ internal class AllowDomainViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private val allowedDomainsDao = mock<AllowedDomainsDao>()
+    private val repository = mock<TrackersRepository>()
 
     private val viewModel = AllowDomainViewModel(
         "a domain",
-        allowedDomainsDao,
+        repository,
         TestDispatcherProvider()
     )
 
@@ -50,24 +49,21 @@ internal class AllowDomainViewModelTest {
 
         viewModel.addAllowedDomain()
 
-        val expectedAllowedDomain = AllowedDomain("a domain", BreakageType.BROKEN_NAVIGATION)
-        verify(allowedDomainsDao).insert(expectedAllowedDomain)
+        verify(repository).addAllowedDomain("a domain", BreakageType.BROKEN_NAVIGATION)
     }
 
     @Test
     fun `should save the allowed website with the default breakage-type when the add button is clicked`() {
         viewModel.addAllowedDomain()
 
-        val expectedAllowedDomain = AllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
-        verify(allowedDomainsDao).insert(expectedAllowedDomain)
+        verify(repository).addAllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
     }
 
     @Test
     fun `should signal the view that the domain has been added, when the database insertion is completed`() {
         viewModel.addAllowedDomain()
 
-        val expectedAllowedDomain = AllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
-        verify(allowedDomainsDao).insert(expectedAllowedDomain)
+        verify(repository).addAllowedDomain("a domain", BreakageType.VIDEOS_DONT_LOAD)
 
         assertThat(getValue(viewModel.onAllowWebsiteAdded).peekContent()).isNotNull
     }

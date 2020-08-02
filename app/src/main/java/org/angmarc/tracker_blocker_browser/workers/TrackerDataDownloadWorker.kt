@@ -3,8 +3,7 @@ package org.angmarc.tracker_blocker_browser.workers
 import android.content.Context
 import androidx.work.*
 import kotlinx.coroutines.runBlocking
-import org.angmarc.tracker_blocker_browser.data.database.BlockedDomain
-import org.angmarc.tracker_blocker_browser.data.database.BlockedDomainsDao
+import org.angmarc.tracker_blocker_browser.data.TrackersRepository
 import org.angmarc.tracker_blocker_browser.data.network.TrackersDataService
 import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEvent
 import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
@@ -15,7 +14,7 @@ class TrackerDataDownloadWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val trackersDataService: TrackersDataService,
-    private val blockedDomainsDao: BlockedDomainsDao,
+    private val repository: TrackersRepository,
     private val exceptionEventRecorder: ExceptionEventRecorder
 ) : Worker(appContext, workerParams) {
 
@@ -24,7 +23,7 @@ class TrackerDataDownloadWorker(
             runBlocking {
                 val trackerDataFile = trackersDataService.trackersDataFile()
                 trackerDataFile.trackers.entries.forEach { (domain, _) ->
-                    blockedDomainsDao.insert(BlockedDomain(domain))
+                    repository.addBlockedDomain(domain)
                 }
             }
         } catch (exception: Exception) {
@@ -52,7 +51,7 @@ class TrackerDataDownloadWorker(
 
     class TrackerDataDownloadWorkerFactory(
         private val trackersDataService: TrackersDataService,
-        private val blockedDomainsDao: BlockedDomainsDao,
+        private val repository: TrackersRepository,
         private val exceptionEventRecorder: ExceptionEventRecorder
     ) : ChildWorkerFactory {
 
@@ -64,7 +63,7 @@ class TrackerDataDownloadWorker(
                 appContext,
                 workerParams,
                 trackersDataService,
-                blockedDomainsDao,
+                repository,
                 exceptionEventRecorder
             )
         }

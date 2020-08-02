@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import org.angmarc.tracker_blocker_browser.core.Event
 
 private const val HTTPS_PREFIX = "https://"
-private const val HTTP_PREFIX = "https://"
+private const val HTTP_PREFIX = "http://"
 
 class BrowserViewModel : ViewModel() {
 
