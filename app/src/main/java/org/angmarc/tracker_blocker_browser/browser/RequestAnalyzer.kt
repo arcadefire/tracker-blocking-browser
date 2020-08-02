@@ -1,7 +1,9 @@
 package org.angmarc.tracker_blocker_browser.browser
 
 import android.net.Uri
+import android.os.Build
 import android.webkit.WebResourceRequest
+import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import org.angmarc.tracker_blocker_browser.data.Analytics
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
@@ -17,10 +19,16 @@ class RequestAnalyzer @Inject constructor(
         repository.trackerDomainNamesSet()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @WorkerThread
     fun shouldBlockRequest(webViewUrl: String, request: WebResourceRequest): Boolean {
+        return shouldBlockRequest(webViewUrl, request.url)
+    }
+
+    @WorkerThread
+    fun shouldBlockRequest(webViewUrl: String, requestUri: Uri): Boolean {
         val rootHost = Uri.parse(webViewUrl).host.orEmpty()
-        val requestHost = request.url.host.orEmpty()
+        val requestHost = requestUri.host.orEmpty()
 
         // This site has been added to the list of allowed websites
         if (repository.isDomainAllowed(rootHost)) {
