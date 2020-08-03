@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.core.Event
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
@@ -34,8 +35,6 @@ class BrowserViewModel @Inject constructor(
     private val allowedDomainsList = liveData<List<AllowedDomain>> {
         emitSource(repository.allowedDomainsFlow().asLiveData())
     }
-    val loadingState = MutableLiveData<LoadingState>()
-
     val addressBarText = MutableLiveData<String>()
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
     val statisticsClicks = MutableLiveData<Event<Unit>>()
@@ -53,17 +52,23 @@ class BrowserViewModel @Inject constructor(
         }
         addSource(allowedDomainsList) {
             val foundDomain =
-                it.firstOrNull { allowedDomain -> allowedDomain.domain == addressBarText.value }
+                it.firstOrNull { allowedDomain -> allowedDomain.domain == extractDomain(addressBarText.value) }
             if (foundDomain != null) {
                 value = BrowserState(null, true)
             }
         }
     }
 
+    private val _messages = MutableLiveData<Event<Int>>()
+    val messages : LiveData<Event<Int>> = _messages
+
+    private val _loadingState = MutableLiveData<LoadingState>()
+    val loadingState : LiveData<LoadingState> = _loadingState
+
     init {
         pageLoadProgress.pageLoadListener = object : PageLoadListener {
             override fun onProgress(progress: Int) {
-                loadingState.value = if (progress == 100) {
+                _loadingState.value = if (progress == 100) {
                     LoadingState(false, 0)
                 } else {
                     LoadingState(true, progress)
@@ -77,12 +82,13 @@ class BrowserViewModel @Inject constructor(
         val domain = extractDomain(uri.host.orEmpty())
         if (domain.isNotBlank()) {
             allowWebsiteClicks.value = Event(domain)
+        } else {
+            _messages.value = Event(R.string.cannot_add_empty_to_allow)
         }
     }
 
     fun viewStatistics() {
-        statisticsClicks.value =
-            Event(Unit)
+        statisticsClicks.value = Event(Unit)
     }
 
     private fun String.addPrefixIfNeeded(): String {

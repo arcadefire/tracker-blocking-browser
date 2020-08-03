@@ -8,11 +8,13 @@ import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
+import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
 import org.angmarc.tracker_blocker_browser.TestTrackerBlockingApplication
 import org.angmarc.tracker_blocker_browser.core.Event
@@ -29,13 +31,13 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-private const val FULL_URL = "https://techcrunch.com"
+private const val FULL_URL = "https://www.techcrunch.com"
 private const val DOMAIN_ONLY = "techcrunch.com"
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
 @Config(
-    manifest=Config.NONE,
+    manifest = Config.NONE,
     application = TestTrackerBlockingApplication::class
 )
 class BrowserViewModelTest {
@@ -50,7 +52,8 @@ class BrowserViewModelTest {
     }
     private val pageLoadProgress = PageLoadProgress()
 
-    private val browserViewModel = BrowserViewModel(repository, pageLoadProgress, TestDispatcherProvider())
+    private val browserViewModel =
+        BrowserViewModel(repository, pageLoadProgress, TestDispatcherProvider())
 
     @Before
     fun setup() {
@@ -80,7 +83,7 @@ class BrowserViewModelTest {
 
             browserViewModel.addressBarText.value = FULL_URL
 
-            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
+            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://www.techcrunch.com")
             assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
         }
 
@@ -90,7 +93,7 @@ class BrowserViewModelTest {
 
         browserViewModel.addressBarText.value = "   $FULL_URL   "
 
-        assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
+        assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://www.techcrunch.com")
         assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
     }
 
@@ -113,6 +116,17 @@ class BrowserViewModelTest {
         val event: Event<String> = getValue(browserViewModel.allowWebsiteClicks)
         assertThat(event.peekContent()).isEqualTo(DOMAIN_ONLY)
     }
+
+
+    @Test
+    fun `should return a warning message when trying to add an empty url to the allowed list`() =
+        runBlockingTest {
+            browserViewModel.addressBarText.value = ""
+
+            browserViewModel.allowCurrentWebsite()
+
+            assertThat(getValue(browserViewModel.messages).peekContent()).isEqualTo(R.string.cannot_add_empty_to_allow)
+        }
 
     @Test
     fun `should handle the click event, when the user wants to see the blocked tracker statistics`() {
@@ -151,22 +165,23 @@ class BrowserViewModelTest {
     @Test
     fun `should emit a new state when the current site is flagged as an allowed domain`() =
         runBlockingTest {
-            whenever(repository.isDomainInAllowedList(DOMAIN_ONLY)).doReturn(true)
-            whenever(repository.allowedDomainsFlow()).doReturn(
-                flow {
-                    emit(
-                        listOf(
-                            AllowedDomain(
-                                FULL_URL,
-                                BreakageType.VIDEOS_DONT_LOAD
-                            )
-                        )
-                    )
+            val list: MutableList<AllowedDomain> = mutableListOf()
+            val flow = flow<List<AllowedDomain>> {
+                while (list.isNotEmpty()) {
+                    emit(list)
                 }
-            )
+            }
 
             browserViewModel.addressBarText.value = FULL_URL
 
+            whenever(repository.isDomainInAllowedList(DOMAIN_ONLY)).doReturn(false)
+            // We just take one element and unsubscribe from the infinite flow
+            whenever(repository.allowedDomainsFlow()).doReturn(flow.take(1))
+
+            // Trigger an emission of a non-empty list on the allow-domains-list flow
+            list.add(AllowedDomain(DOMAIN_ONLY, breakageType = BreakageType.VIDEOS_DONT_LOAD))
+
+            // And check the value generated from the mediator live data
             assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isTrue()
         }
 }

@@ -2,6 +2,7 @@ package org.angmarc.tracker_blocker_browser.browser
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -53,7 +54,7 @@ class BrowserActivity : AppCompatActivity() {
         configureWebView()
 
         binding.addressInput.setOnEditorActionListener { _, _, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN) {
+            if (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN) {
                 viewModel.addressBarText.value = binding.addressInput.text.toString()
             }
             true
@@ -79,6 +80,9 @@ class BrowserActivity : AppCompatActivity() {
                 }
                 progress = it.progress
             }
+        })
+        viewModel.messages.observe(this, EventObserver {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         })
         viewModel.allowWebsiteClicks.observe(this,
             EventObserver {
