@@ -7,6 +7,7 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
+import androidx.annotation.WorkerThread
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
@@ -17,11 +18,13 @@ class BrowserWebClient @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ) : WebViewClient() {
 
+    @WorkerThread
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         return shouldIntercept(view, Uri.parse(url))
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @WorkerThread
     override fun shouldInterceptRequest(
         view: WebView,
         request: WebResourceRequest
@@ -29,6 +32,7 @@ class BrowserWebClient @Inject constructor(
         return shouldIntercept(view, request.url)
     }
 
+    @WorkerThread
     private fun shouldIntercept(
         view: WebView,
         requestUri: Uri
