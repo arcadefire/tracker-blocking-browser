@@ -1,4 +1,4 @@
-package org.angmarc.tracker_blocker_browser.browser.file_loader
+package org.angmarc.tracker_blocker_browser.data.file_loader
 
 import android.content.res.Resources
 import android.content.res.Resources.NotFoundException
@@ -12,7 +12,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.angmarc.tracker_blocker_browser.TestDispatcherProvider
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
-import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerDataFileLoader
 import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEvent
 import org.angmarc.tracker_blocker_browser.exception_report.ExceptionEventRecorder
 import org.junit.After

@@ -9,6 +9,7 @@ import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.angmarc.tracker_blocker_browser.TestTrackerBlockingApplication
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerInfo
 import org.angmarc.tracker_blocker_browser.data.file_loader.TrackerOwner
@@ -20,11 +21,16 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 private const val TRACKER_DOMAIN_NAME = "tracker-url.com"
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
+@Config(
+    manifest= Config.NONE,
+    application = TestTrackerBlockingApplication::class
+)
 class TrackerDataDownloadWorkerTest {
 
     private val trackerInfo = TrackerInfo("a domain", TrackerOwner("owner", "display name"))

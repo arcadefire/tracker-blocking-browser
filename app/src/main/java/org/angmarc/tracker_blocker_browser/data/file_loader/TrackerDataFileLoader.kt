@@ -1,7 +1,6 @@
 package org.angmarc.tracker_blocker_browser.data.file_loader
 
 import android.content.res.Resources
-import androidx.annotation.WorkerThread
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -22,7 +21,6 @@ class TrackerDataFileLoader @Inject constructor(
 
     private val scope: CoroutineScope = CoroutineScope(dispatcherProvider.io())
 
-    @WorkerThread
     fun loadData() {
         scope.launch {
             if (!repository.isTrackerListEmpty()) {
@@ -34,6 +32,7 @@ class TrackerDataFileLoader @Inject constructor(
                     it.readText()
                 }
                 val jsonAdapter = moshi.adapter<TrackersDataFile>(TrackersDataFile::class.java)
+                // This coroutine is executed in the IO context, but the linter doesn't seem to detect this
                 val trackersDataFile = jsonAdapter.fromJson(rawJson)
 
                 if (trackersDataFile != null) {

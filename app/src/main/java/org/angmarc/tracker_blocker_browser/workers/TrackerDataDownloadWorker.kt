@@ -1,6 +1,7 @@
 package org.angmarc.tracker_blocker_browser.workers
 
 import android.content.Context
+import androidx.annotation.WorkerThread
 import androidx.work.*
 import kotlinx.coroutines.runBlocking
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
@@ -18,6 +19,7 @@ class TrackerDataDownloadWorker(
     private val exceptionEventRecorder: ExceptionEventRecorder
 ) : Worker(appContext, workerParams) {
 
+    @WorkerThread
     override fun doWork(): Result {
         try {
             runBlocking {
@@ -55,7 +57,7 @@ class TrackerDataDownloadWorker(
         private val exceptionEventRecorder: ExceptionEventRecorder
     ) : ChildWorkerFactory {
 
-        override fun get(
+        override fun build(
             appContext: Context,
             workerParams: WorkerParameters
         ): Worker {

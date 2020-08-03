@@ -14,10 +14,19 @@ import javax.inject.Inject
 private const val HTTPS_PREFIX = "https://"
 private const val HTTP_PREFIX = "http://"
 
-data class BrowserState(val urlToLoad: String?, val shouldSuspendBlocking: Boolean)
+data class BrowserState(
+    val urlToLoad: String? = null,
+    val shouldSuspendBlocking: Boolean
+)
+
+data class LoadingState(
+    val shouldShowProgress: Boolean,
+    val progress: Int
+)
 
 class BrowserViewModel @Inject constructor(
     private val repository: TrackersRepository,
+    pageLoadProgress: PageLoadProgress,
     private val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
 
@@ -25,6 +34,7 @@ class BrowserViewModel @Inject constructor(
     private val allowedDomainsList = liveData<List<AllowedDomain>> {
         emitSource(repository.allowedDomainsFlow().asLiveData())
     }
+    val loadingState = MutableLiveData<LoadingState>()
 
     val addressBarText = MutableLiveData<String>()
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
@@ -34,8 +44,8 @@ class BrowserViewModel @Inject constructor(
         addSource(addressBarText) { address ->
             coroutineScope.launch(dispatcherProvider.io()) {
                 val urlToLoad = address.addPrefixIfNeeded()
-                val host = Uri.parse(urlToLoad).host.orEmpty()
-                val shouldSuspendBlocking = repository.isDomainInAllowedList(host)
+                val shouldSuspendBlocking = shouldSuspendBlockingForCurrentSite(urlToLoad)
+
                 withContext(dispatcherProvider.main()) {
                     value = BrowserState(urlToLoad, shouldSuspendBlocking)
                 }
@@ -50,11 +60,23 @@ class BrowserViewModel @Inject constructor(
         }
     }
 
+    init {
+        pageLoadProgress.pageLoadListener = object : PageLoadListener {
+            override fun onProgress(progress: Int) {
+                loadingState.value = if (progress == 100) {
+                    LoadingState(false, 0)
+                } else {
+                    LoadingState(true, progress)
+                }
+            }
+        }
+    }
+
     fun allowCurrentWebsite() {
-        val uri = Uri.parse(HTTP_PREFIX + addressBarText.value.orEmpty())
-        if (uri.host.orEmpty().isNotBlank()) {
-            allowWebsiteClicks.value =
-                Event(addressBarText.value.orEmpty())
+        val uri = Uri.parse(addressBarText.value.orEmpty().addPrefixIfNeeded())
+        val domain = extractDomain(uri.host.orEmpty())
+        if (domain.isNotBlank()) {
+            allowWebsiteClicks.value = Event(domain)
         }
     }
 
@@ -71,5 +93,11 @@ class BrowserViewModel @Inject constructor(
                 HTTPS_PREFIX + it
             }
         }
+    }
+
+    private suspend fun shouldSuspendBlockingForCurrentSite(urlToLoad: String): Boolean {
+        val host = Uri.parse(urlToLoad).host.orEmpty()
+        val domain = extractDomain(host)
+        return repository.isDomainInAllowedList(domain)
     }
 }

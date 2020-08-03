@@ -7,7 +7,7 @@ import androidx.work.WorkerParameters
 import javax.inject.Inject
 
 class CustomWorkerFactory @Inject constructor(
-    private val map: Map<String, @JvmSuppressWildcards ChildWorkerFactory>
+    private val workerFactoryMap: Map<String, @JvmSuppressWildcards ChildWorkerFactory>
 ): WorkerFactory() {
 
     override fun createWorker(
@@ -15,7 +15,7 @@ class CustomWorkerFactory @Inject constructor(
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        return (map[workerClassName] ?: error("Couldn't instantiate a worker factory")).get(
+        return (workerFactoryMap[workerClassName] ?: error("Couldn't instantiate a worker factory")).build(
             appContext,
             workerParameters
         )

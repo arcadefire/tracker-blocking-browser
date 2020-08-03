@@ -32,7 +32,7 @@ class RequestAnalyzer @Inject constructor(
         }
 
         // This site has been added to the list of allowed websites
-        if (repository.isDomainInAllowedList(rootHost)) {
+        if (repository.isDomainInAllowedList(extractDomain(rootHost))) {
             return false
         }
 

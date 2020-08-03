@@ -10,7 +10,7 @@ import org.angmarc.tracker_blocker_browser.di.DaggerApplicationComponent
 import org.angmarc.tracker_blocker_browser.workers.TrackerDataDownloadWorker
 import javax.inject.Inject
 
-class TrackerBlockingApplication : Application(), Configuration.Provider {
+open class TrackerBlockingApplication : Application(), Configuration.Provider {
 
     lateinit var applicationComponent: ApplicationComponent
 

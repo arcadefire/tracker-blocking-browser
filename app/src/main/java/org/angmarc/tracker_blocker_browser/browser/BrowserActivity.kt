@@ -1,10 +1,7 @@
 package org.angmarc.tracker_blocker_browser.browser
 
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +23,9 @@ class BrowserActivity : AppCompatActivity() {
 
     @Inject
     lateinit var webClient: BrowserWebClient
+
+    @Inject
+    lateinit var chromeClient: BrowserWebChomeClient
 
     @Inject
     lateinit var viewModelProvider: ViewModelProvider
@@ -62,13 +62,23 @@ class BrowserActivity : AppCompatActivity() {
         viewModel.state.observe(this, Observer {
             it.urlToLoad?.let { urlToLoad ->
                 binding.webView.loadUrl(urlToLoad)
+                hideKeyboard()
             }
             if (it.shouldSuspendBlocking) {
                 binding.addressInputLayout.setStartIconDrawable(R.drawable.ic_remove_circle_outline_24px)
             } else {
                 binding.addressInputLayout.startIconDrawable = null
             }
-            hideKeyboard()
+        })
+        viewModel.loadingState.observe(this, Observer {
+            with(binding.pageLoadingProgressBar) {
+                visibility = if (it.shouldShowProgress) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+                progress = it.progress
+            }
         })
         viewModel.allowWebsiteClicks.observe(this,
             EventObserver {
@@ -96,6 +106,7 @@ class BrowserActivity : AppCompatActivity() {
                 setSupportZoom(true)
             }
             webViewClient = webClient
+            webChromeClient = chromeClient
         }
     }
 

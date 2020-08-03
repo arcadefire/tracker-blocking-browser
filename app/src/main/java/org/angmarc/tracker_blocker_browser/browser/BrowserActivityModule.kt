@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import dagger.Module
 import dagger.Provides
+import org.angmarc.tracker_blocker_browser.di.ActivityScope
 
 @Module
 object BrowserActivityModule {
@@ -18,4 +19,8 @@ object BrowserActivityModule {
             viewModelFactory
         )
     }
+
+    @ActivityScope
+    @Provides
+    fun providePageLoadProgress() : PageLoadProgress = PageLoadProgress()
 }

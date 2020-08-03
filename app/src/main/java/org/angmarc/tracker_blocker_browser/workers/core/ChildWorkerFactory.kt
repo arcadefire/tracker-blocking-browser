@@ -5,7 +5,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 
 interface ChildWorkerFactory {
-    fun get(
+    fun build(
         appContext: Context,
         workerParams: WorkerParameters
     ): Worker
