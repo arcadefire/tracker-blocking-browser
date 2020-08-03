@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
-import org.angmarc.tracker_blocker_browser.allowed_list.AllowDomainFragmentDialog
+import org.angmarc.tracker_blocker_browser.add_allowed_domain.AllowDomainFragmentDialog
 import org.angmarc.tracker_blocker_browser.core.EventObserver
 import org.angmarc.tracker_blocker_browser.databinding.ActivityBrowserBinding
 import org.angmarc.tracker_blocker_browser.extensions.hideKeyboard

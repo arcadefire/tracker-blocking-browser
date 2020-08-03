@@ -1,4 +1,4 @@
-package org.angmarc.tracker_blocker_browser.allowed_list
+package org.angmarc.tracker_blocker_browser.add_allowed_domain
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockito_kotlin.mock

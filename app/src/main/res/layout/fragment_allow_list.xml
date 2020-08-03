@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="org.angmarc.tracker_blocker_browser.allowed_list.AllowDomainViewModel" />
+            type="org.angmarc.tracker_blocker_browser.add_allowed_domain.AllowDomainViewModel" />
     </data>
 
     <ScrollView
