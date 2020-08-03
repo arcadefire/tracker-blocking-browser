@@ -96,4 +96,19 @@ internal class TrackerDataFileLoaderTest {
 
             verify(exceptionEventRecorder).record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
         }
+
+    @Test
+    fun `should record an exception if the loaded trackers data file is blank`() =
+        runBlockingTest {
+            whenever(repository.isTrackerListEmpty()).thenReturn(true)
+            whenever(resources.openRawResource(any())).thenReturn(
+                "".byteInputStream(StandardCharsets.UTF_8)
+            )
+
+            trackerDataFileLoader.loadData()
+
+            verify(exceptionEventRecorder).record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
+            verify(repository).isTrackerListEmpty()
+            verifyNoMoreInteractions(repository)
+        }
 }

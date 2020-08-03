@@ -33,14 +33,10 @@ class TrackerDataFileLoader @Inject constructor(
                 }
                 val jsonAdapter = moshi.adapter<TrackersDataFile>(TrackersDataFile::class.java)
                 // This coroutine is executed in the IO context, but the linter doesn't seem to detect this
-                val trackersDataFile = jsonAdapter.fromJson(rawJson)
+                val trackersDataFile = jsonAdapter.fromJson(rawJson)!!
 
-                if (trackersDataFile != null) {
-                    trackersDataFile.trackers.entries.forEach { (domain, _) ->
-                        repository.addBlockedDomain(domain)
-                    }
-                } else {
-                    exceptionEventRecorder.record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
+                trackersDataFile.trackers.entries.forEach { (domain, _) ->
+                    repository.addBlockedDomain(domain)
                 }
             } catch (exception: Exception) {
                 exceptionEventRecorder.record(ExceptionEvent.EXCEPTION_ON_FILE_LOAD_FROM_DISK)
