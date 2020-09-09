@@ -44,7 +44,7 @@ fun Browser(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         WebComponent(
-            if (url.isNullOrBlank()) "" else url,
+            url.orEmpty(),
             Modifier
                 .fillMaxWidth()
                 .weight(1f, fill = true),
@@ -62,7 +62,7 @@ fun Browser(
                     color = Color(0xFF333333),
                     shape = RoundedCornerShape(16.dp)
                 ),
-            gravity =  ContentGravity.CenterStart,
+            gravity = ContentGravity.CenterStart,
         ) {
             AddressBar(
                 addressBarText,
@@ -115,7 +115,9 @@ fun WebComponent(
 ) {
     Box(modifier = modifier) {
         AndroidView(::WebView) {
-            it.setUrl(url)
+            if (url.isNotEmpty()) {
+                it.setUrl(url)
+            }
             it.webViewClient = browserSettings.webClient ?: WebViewClient()
             it.webChromeClient = browserSettings.chromeClient
             it.settings.apply {

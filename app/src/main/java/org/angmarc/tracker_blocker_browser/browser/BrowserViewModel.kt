@@ -39,7 +39,6 @@ class BrowserViewModel @Inject constructor(
     }
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
     val statisticsClicks = MutableLiveData<Event<Unit>>()
-
     val addressBarTextField = MutableLiveData<TextFieldValue>()
 
     val state = MediatorLiveData<BrowserState>().apply {
