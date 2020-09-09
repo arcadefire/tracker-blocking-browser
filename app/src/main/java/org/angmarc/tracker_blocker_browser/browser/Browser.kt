@@ -2,19 +2,35 @@ package org.angmarc.tracker_blocker_browser.browser
 
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.compose.foundation.BaseTextField
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.RowScope.gravity
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.ui.tooling.preview.Preview
+
+@Preview
+@Composable
+fun BrowserPreview() {
+    Browser(
+        url = "https://www.theverge.com",
+        addressBarText = TextFieldValue("https://www.theverge.com"),
+        {},
+        {}
+    )
+}
 
 @Composable
 fun Browser(
@@ -30,18 +46,30 @@ fun Browser(
                 .fillMaxWidth()
                 .weight(1f, fill = true)
         )
-        AddressBar(
-            addressBarText,
-            onAddressChange,
-            onAddressSubmit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(72.dp)
-                .padding(8.dp)
-                .clip(
-                    shape = RoundedCornerShape(16.dp)
-                )
+        Divider(
+            modifier = Modifier.height(1.dp).gravity(Alignment.CenterVertically),
+            color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f)
         )
+        Box(
+            modifier = Modifier
+                .height(54.dp)
+                .padding(InnerPadding(8.dp))
+                .background(
+                    color = Color(0xFFCCCCCC),
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            gravity =  ContentGravity.CenterStart,
+        ) {
+            AddressBar(
+                addressBarText,
+                onAddressChange,
+                onAddressSubmit,
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+        }
     }
 }
 
@@ -59,9 +87,13 @@ fun AddressBar(
             onAddressChange(it)
         },
         modifier = modifier,
-        keyboardType = KeyboardType.Uri,
+        keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Send,
-        onImeActionPerformed = { onAddressSubmit() }
+        onImeActionPerformed = { onAddressSubmit() },
+        textStyle = TextStyle(
+            fontSize = TextUnit.Sp(16),
+            color = Color(0xFFFFFFFF)
+        )
     )
 }
 

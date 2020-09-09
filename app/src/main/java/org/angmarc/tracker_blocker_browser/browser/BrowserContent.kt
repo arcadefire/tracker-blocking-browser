@@ -14,6 +14,7 @@ fun BrowserContent(
     viewModel: BrowserViewModel
 ) {
     val state = viewModel.state.observeAsState().value
+
     Surface {
         Stack(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.fillMaxWidth()) {

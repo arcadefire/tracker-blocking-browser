@@ -47,7 +47,6 @@ class BrowserViewModel @Inject constructor(
             value = BrowserState("", addressTextField, false)
         }
 
-
         addSource(allowedDomainsList) {
             val foundDomain =
                 it.firstOrNull { allowedDomain ->
