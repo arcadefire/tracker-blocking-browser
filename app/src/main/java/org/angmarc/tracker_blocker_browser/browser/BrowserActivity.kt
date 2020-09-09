@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import org.angmarc.tracker_blocker_browser.R
@@ -11,7 +12,6 @@ import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
 import org.angmarc.tracker_blocker_browser.add_allowed_domain.AllowDomainFragmentDialog
 import org.angmarc.tracker_blocker_browser.core.EventObserver
 import org.angmarc.tracker_blocker_browser.databinding.ActivityBrowserBinding
-import org.angmarc.tracker_blocker_browser.extensions.hideKeyboard
 import org.angmarc.tracker_blocker_browser.stats.StatsDialogFragment
 import javax.inject.Inject
 
@@ -47,20 +47,15 @@ class BrowserActivity : AppCompatActivity() {
 
         binding = ActivityBrowserBinding.inflate(LayoutInflater.from(this), null, false)
 
-        setContentView(binding.root)
+        setContent {
+            BrowserContent(viewModel)
+        }
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
         configureWebView()
 
-        binding.addressInput.setOnEditorActionListener { _, _, keyEvent ->
-            if (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN) {
-                viewModel.addressBarText.value = binding.addressInput.text.toString()
-            }
-            true
-        }
-
-        viewModel.state.observe(this, Observer {
+        /*viewModel.state.observe(this, Observer {
             it.urlToLoad?.let { urlToLoad ->
                 binding.webView.loadUrl(urlToLoad)
                 hideKeyboard()
@@ -71,6 +66,7 @@ class BrowserActivity : AppCompatActivity() {
                 binding.addressInputLayout.startIconDrawable = null
             }
         })
+        */
         viewModel.loadingState.observe(this, Observer {
             with(binding.pageLoadingProgressBar) {
                 visibility = if (it.shouldShowProgress) {
@@ -99,7 +95,7 @@ class BrowserActivity : AppCompatActivity() {
     }
 
     private fun configureWebView() {
-        with(binding.webView) {
+        /*with(binding.webView) {
             settings.apply {
                 javaScriptEnabled = true
                 loadWithOverviewMode = true
@@ -111,7 +107,7 @@ class BrowserActivity : AppCompatActivity() {
             }
             webViewClient = webClient
             webChromeClient = chromeClient
-        }
+        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

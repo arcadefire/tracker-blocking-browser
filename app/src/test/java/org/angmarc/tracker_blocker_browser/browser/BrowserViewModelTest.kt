@@ -47,7 +47,7 @@ class BrowserViewModelTest {
 
     private val repository = mock<TrackersRepository> {
         runBlocking {
-            on { allowedDomainsFlow() } doReturn flow { emit(emptyList()) }
+            on { allowedDomainsFlow() } doReturn flow { emit(emptyList<AllowedDomain>()) }
         }
     }
     private val pageLoadProgress = PageLoadProgress()
