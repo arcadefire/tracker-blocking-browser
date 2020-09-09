@@ -21,14 +21,15 @@ fun BrowserContent(
     viewModel: BrowserViewModel,
     browserSettings: BrowserSettings
 ) {
-    val state = viewModel.state.observeAsState().value
+    val state = viewModel.browserState.observeAsState().value
 
     Surface {
         Stack(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Browser(
                     url = state?.urlToLoad.orEmpty(),
-                    addressBarText = state?.addressBarText ?: TextFieldValue(),
+                    address = state?.address ?: TextFieldValue(),
+                    pageLoadProgress = state?.pageLoadProgress ?: 0,
                     onAddressChange = { viewModel.addressBarTextField.value = it },
                     onAddressSubmit = {
                         viewModel.submitAddress()

@@ -27,7 +27,8 @@ import androidx.ui.tooling.preview.Preview
 fun BrowserPreview() {
     Browser(
         url = "https://www.theverge.com",
-        addressBarText = TextFieldValue("https://www.theverge.com"),
+        address = TextFieldValue("https://www.theverge.com"),
+        0,
         {},
         {},
         BrowserSettings(null, null)
@@ -37,7 +38,8 @@ fun BrowserPreview() {
 @Composable
 fun Browser(
     url: String?,
-    addressBarText: TextFieldValue,
+    address: TextFieldValue,
+    pageLoadProgress: Int = 0,
     onAddressChange: (newAddress: TextFieldValue) -> Unit,
     onAddressSubmit: () -> Unit,
     browserSettings: BrowserSettings
@@ -51,9 +53,18 @@ fun Browser(
             browserSettings
         )
         Divider(
-            modifier = Modifier.height(1.dp).gravity(Alignment.CenterVertically),
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f)
+            modifier = Modifier
+                .fillMaxWidth(pageLoadProgress / 100f)
+                .height(2.dp)
+                .gravity(Alignment.Start),
+            color = Color(255, 0, 0, 100)
         )
+        if (pageLoadProgress > 0) {
+            Divider(
+                modifier = Modifier.height(1.dp).gravity(Alignment.CenterVertically),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f)
+            )
+        }
         Box(
             modifier = Modifier
                 .height(54.dp)
@@ -65,7 +76,7 @@ fun Browser(
             gravity = ContentGravity.CenterStart,
         ) {
             AddressBar(
-                addressBarText,
+                address,
                 onAddressChange,
                 onAddressSubmit,
                 modifier = Modifier

@@ -2,7 +2,10 @@ package org.angmarc.tracker_blocker_browser.browser
 
 import android.net.Uri
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -10,7 +13,6 @@ import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.core.DispatcherProvider
 import org.angmarc.tracker_blocker_browser.core.Event
 import org.angmarc.tracker_blocker_browser.data.TrackersRepository
-import org.angmarc.tracker_blocker_browser.data.database.AllowedDomain
 import javax.inject.Inject
 
 private const val HTTPS_PREFIX = "https://"
@@ -18,8 +20,9 @@ private const val HTTP_PREFIX = "http://"
 
 data class BrowserState(
     val urlToLoad: String? = null,
-    val addressBarText: TextFieldValue,
-    val shouldSuspendBlocking: Boolean
+    val address: TextFieldValue,
+    val suspendBlockingForCurrentSite: Boolean,
+    val pageLoadProgress: Int = 0
 )
 
 data class LoadingState(
@@ -34,45 +37,24 @@ class BrowserViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val coroutineScope = CoroutineScope(dispatcherProvider.io())
-    private val allowedDomainsList = liveData<List<AllowedDomain>> {
-        emitSource(repository.allowedDomainsFlow().asLiveData())
-    }
+
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
     val statisticsClicks = MutableLiveData<Event<Unit>>()
     val addressBarTextField = MutableLiveData<TextFieldValue>()
 
-    val state = MediatorLiveData<BrowserState>().apply {
+    val browserState = MediatorLiveData<BrowserState>().apply {
         addSource(addressBarTextField) { addressTextField ->
             value = BrowserState("", addressTextField, false)
-        }
-
-        addSource(allowedDomainsList) {
-            val foundDomain =
-                it.firstOrNull { allowedDomain ->
-                    allowedDomain.domain == extractDomain(
-                        addressBarTextField.value?.text
-                    )
-                }
-            if (foundDomain != null) {
-                value = BrowserState(null, TextFieldValue(), true)
-            }
         }
     }
 
     private val _messages = MutableLiveData<Event<Int>>()
     val messages: LiveData<Event<Int>> = _messages
 
-    private val _loadingState = MutableLiveData<LoadingState>()
-    val loadingState: LiveData<LoadingState> = _loadingState
-
     init {
         pageLoadProgress.pageLoadListener = object : PageLoadListener {
             override fun onProgress(progress: Int) {
-                _loadingState.value = if (progress == 100) {
-                    LoadingState(false, 0)
-                } else {
-                    LoadingState(true, progress)
-                }
+                browserState.value = browserState.value?.copy(urlToLoad = "", pageLoadProgress = progress)
             }
         }
     }
@@ -83,7 +65,7 @@ class BrowserViewModel @Inject constructor(
             val shouldSuspendBlocking = shouldSuspendBlockingForCurrentSite(urlToLoad)
 
             withContext(dispatcherProvider.main()) {
-                state.value = BrowserState(
+                browserState.value = BrowserState(
                     urlToLoad,
                     addressBarTextField.value ?: TextFieldValue(),
                     shouldSuspendBlocking

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
@@ -55,16 +54,6 @@ class BrowserActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        viewModel.loadingState.observe(this, {
-            with(binding.pageLoadingProgressBar) {
-                visibility = if (it.shouldShowProgress) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-                progress = it.progress
-            }
-        })
         viewModel.messages.observe(this, EventObserver {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         })

@@ -72,8 +72,8 @@ class BrowserViewModelTest {
 
             browserViewModel.addressBarText.value = "techcrunch.com"
 
-            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+            assertThat(getValue(browserViewModel.browserState).urlToLoad).isEqualTo("https://techcrunch.com")
+            assertThat(getValue(browserViewModel.browserState).suspendBlockingForCurrentSite).isEqualTo(false)
         }
 
     @Test
@@ -83,8 +83,8 @@ class BrowserViewModelTest {
 
             browserViewModel.addressBarText.value = FULL_URL
 
-            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://www.techcrunch.com")
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+            assertThat(getValue(browserViewModel.browserState).urlToLoad).isEqualTo("https://www.techcrunch.com")
+            assertThat(getValue(browserViewModel.browserState).suspendBlockingForCurrentSite).isEqualTo(false)
         }
 
     @Test
@@ -93,8 +93,8 @@ class BrowserViewModelTest {
 
         browserViewModel.addressBarText.value = "   $FULL_URL   "
 
-        assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://www.techcrunch.com")
-        assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+        assertThat(getValue(browserViewModel.browserState).urlToLoad).isEqualTo("https://www.techcrunch.com")
+        assertThat(getValue(browserViewModel.browserState).suspendBlockingForCurrentSite).isEqualTo(false)
     }
 
     @Test
@@ -104,7 +104,7 @@ class BrowserViewModelTest {
 
             browserViewModel.addressBarText.value = FULL_URL
 
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(true)
+            assertThat(getValue(browserViewModel.browserState).suspendBlockingForCurrentSite).isEqualTo(true)
         }
 
     @Test
@@ -182,6 +182,6 @@ class BrowserViewModelTest {
             list.add(AllowedDomain(DOMAIN_ONLY, breakageType = BreakageType.VIDEOS_DONT_LOAD))
 
             // And check the value generated from the mediator live data
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isTrue()
+            assertThat(getValue(browserViewModel.browserState).suspendBlockingForCurrentSite).isTrue()
         }
 }
