@@ -1,11 +1,13 @@
 package org.angmarc.tracker_blocker_browser.browser
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import org.angmarc.tracker_blocker_browser.R
 import org.angmarc.tracker_blocker_browser.TrackerBlockingApplication
@@ -48,26 +50,12 @@ class BrowserActivity : AppCompatActivity() {
         binding = ActivityBrowserBinding.inflate(LayoutInflater.from(this), null, false)
 
         setContent {
-            BrowserContent(viewModel)
+            BrowserContent(viewModel, browserSettings = BrowserSettings(webClient, chromeClient))
         }
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        configureWebView()
-
-        /*viewModel.state.observe(this, Observer {
-            it.urlToLoad?.let { urlToLoad ->
-                binding.webView.loadUrl(urlToLoad)
-                hideKeyboard()
-            }
-            if (it.shouldSuspendBlocking) {
-                binding.addressInputLayout.setStartIconDrawable(R.drawable.ic_remove_circle_outline_24px)
-            } else {
-                binding.addressInputLayout.startIconDrawable = null
-            }
-        })
-        */
-        viewModel.loadingState.observe(this, Observer {
+        viewModel.loadingState.observe(this, {
             with(binding.pageLoadingProgressBar) {
                 visibility = if (it.shouldShowProgress) {
                     View.VISIBLE
@@ -92,22 +80,6 @@ class BrowserActivity : AppCompatActivity() {
                     .instance()
                     .show(supportFragmentManager, FRAGMENT_VIEW_STATISTICS)
             })
-    }
-
-    private fun configureWebView() {
-        /*with(binding.webView) {
-            settings.apply {
-                javaScriptEnabled = true
-                loadWithOverviewMode = true
-                useWideViewPort = true
-                builtInZoomControls = true
-                displayZoomControls = false
-                setSupportMultipleWindows(true)
-                setSupportZoom(true)
-            }
-            webViewClient = webClient
-            webChromeClient = chromeClient
-        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

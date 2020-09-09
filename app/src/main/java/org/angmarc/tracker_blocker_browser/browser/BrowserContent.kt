@@ -1,5 +1,7 @@
 package org.angmarc.tracker_blocker_browser.browser
 
+import android.webkit.WebChromeClient
+import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Stack
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,9 +11,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 
+data class BrowserSettings(
+    val webClient: WebViewClient?,
+    val chromeClient: WebChromeClient?
+)
+
 @Composable
 fun BrowserContent(
-    viewModel: BrowserViewModel
+    viewModel: BrowserViewModel,
+    browserSettings: BrowserSettings
 ) {
     val state = viewModel.state.observeAsState().value
 
@@ -22,7 +30,10 @@ fun BrowserContent(
                     url = state?.urlToLoad.orEmpty(),
                     addressBarText = state?.addressBarText ?: TextFieldValue(),
                     onAddressChange = { viewModel.addressBarTextField.value = it },
-                    onAddressSubmit = { viewModel.submitAddress() },
+                    onAddressSubmit = {
+                        viewModel.submitAddress()
+                    },
+                    browserSettings
                 )
             }
         }

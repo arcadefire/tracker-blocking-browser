@@ -8,10 +8,11 @@ import androidx.compose.foundation.layout.RowScope.gravity
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,7 +29,8 @@ fun BrowserPreview() {
         url = "https://www.theverge.com",
         addressBarText = TextFieldValue("https://www.theverge.com"),
         {},
-        {}
+        {},
+        BrowserSettings(null, null)
     )
 }
 
@@ -37,14 +39,16 @@ fun Browser(
     url: String?,
     addressBarText: TextFieldValue,
     onAddressChange: (newAddress: TextFieldValue) -> Unit,
-    onAddressSubmit: () -> Unit
+    onAddressSubmit: () -> Unit,
+    browserSettings: BrowserSettings
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         WebComponent(
             if (url.isNullOrBlank()) "" else url,
             Modifier
                 .fillMaxWidth()
-                .weight(1f, fill = true)
+                .weight(1f, fill = true),
+            browserSettings
         )
         Divider(
             modifier = Modifier.height(1.dp).gravity(Alignment.CenterVertically),
@@ -55,7 +59,7 @@ fun Browser(
                 .height(54.dp)
                 .padding(InnerPadding(8.dp))
                 .background(
-                    color = Color(0xFFCCCCCC),
+                    color = Color(0xFF333333),
                     shape = RoundedCornerShape(16.dp)
                 ),
             gravity =  ContentGravity.CenterStart,
@@ -81,19 +85,25 @@ fun AddressBar(
     onAddressSubmit: () -> Unit,
     modifier: Modifier
 ) {
+    var keyboardController by remember { mutableStateOf<SoftwareKeyboardController?>(null) }
+
     BaseTextField(
         value = addressBarText,
         onValueChange = {
             onAddressChange(it)
         },
         modifier = modifier,
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Send,
-        onImeActionPerformed = { onAddressSubmit() },
         textStyle = TextStyle(
             fontSize = TextUnit.Sp(16),
             color = Color(0xFFFFFFFF)
-        )
+        ),
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Send,
+        onImeActionPerformed = {
+            onAddressSubmit()
+            keyboardController?.hideSoftwareKeyboard()
+        },
+        onTextInputStarted = { controller -> keyboardController = controller },
     )
 }
 
@@ -101,12 +111,22 @@ fun AddressBar(
 fun WebComponent(
     url: String,
     modifier: Modifier,
-    webViewClient: WebViewClient = WebViewClient()
+    browserSettings: BrowserSettings
 ) {
     Box(modifier = modifier) {
         AndroidView(::WebView) {
             it.setUrl(url)
-            it.webViewClient = webViewClient
+            it.webViewClient = browserSettings.webClient ?: WebViewClient()
+            it.webChromeClient = browserSettings.chromeClient
+            it.settings.apply {
+                javaScriptEnabled = true
+                loadWithOverviewMode = true
+                useWideViewPort = true
+                builtInZoomControls = true
+                displayZoomControls = false
+                setSupportMultipleWindows(true)
+                setSupportZoom(true)
+            }
         }
     }
 }
