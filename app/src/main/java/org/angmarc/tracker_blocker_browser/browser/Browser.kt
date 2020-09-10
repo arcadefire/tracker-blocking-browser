@@ -27,7 +27,6 @@ import androidx.ui.tooling.preview.Preview
 fun BrowserPreview() {
     Browser(
         url = "https://www.theverge.com",
-        address = TextFieldValue("https://www.theverge.com"),
         0,
         {},
         {},
@@ -38,7 +37,6 @@ fun BrowserPreview() {
 @Composable
 fun Browser(
     url: String?,
-    address: TextFieldValue,
     pageLoadProgress: Int = 0,
     onAddressChange: (newAddress: TextFieldValue) -> Unit,
     onAddressSubmit: () -> Unit,
@@ -76,7 +74,6 @@ fun Browser(
             gravity = ContentGravity.CenterStart,
         ) {
             AddressBar(
-                address,
                 onAddressChange,
                 onAddressSubmit,
                 modifier = Modifier
@@ -91,16 +88,17 @@ fun Browser(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AddressBar(
-    addressBarText: TextFieldValue,
     onAddressChange: (addressBarText: TextFieldValue) -> Unit,
     onAddressSubmit: () -> Unit,
     modifier: Modifier
 ) {
     var keyboardController by remember { mutableStateOf<SoftwareKeyboardController?>(null) }
+    var fieldValue by remember { mutableStateOf(TextFieldValue("")) }
 
     BaseTextField(
-        value = addressBarText,
+        value = fieldValue,
         onValueChange = {
+            fieldValue = it
             onAddressChange(it)
         },
         modifier = modifier,

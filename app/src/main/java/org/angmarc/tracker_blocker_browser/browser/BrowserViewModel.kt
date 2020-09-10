@@ -1,12 +1,12 @@
 package org.angmarc.tracker_blocker_browser.browser
 
 import android.net.Uri
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.angmarc.tracker_blocker_browser.R
@@ -19,15 +19,9 @@ private const val HTTPS_PREFIX = "https://"
 private const val HTTP_PREFIX = "http://"
 
 data class BrowserState(
-    val urlToLoad: String? = null,
-    val address: TextFieldValue,
-    val suspendBlockingForCurrentSite: Boolean,
+    val urlToLoad: String = "",
+    val suspendBlockingForCurrentSite: Boolean = false,
     val pageLoadProgress: Int = 0
-)
-
-data class LoadingState(
-    val shouldShowProgress: Boolean,
-    val progress: Int
 )
 
 class BrowserViewModel @Inject constructor(
@@ -40,13 +34,8 @@ class BrowserViewModel @Inject constructor(
 
     val allowWebsiteClicks = MutableLiveData<Event<String>>()
     val statisticsClicks = MutableLiveData<Event<Unit>>()
-    val addressBarTextField = MutableLiveData<TextFieldValue>()
-
-    val browserState = MediatorLiveData<BrowserState>().apply {
-        addSource(addressBarTextField) { addressTextField ->
-            value = BrowserState("", addressTextField, false)
-        }
-    }
+    val addressBarText = MutableLiveData<String>()
+    val browserState = MutableLiveData<BrowserState>()
 
     private val _messages = MutableLiveData<Event<Int>>()
     val messages: LiveData<Event<Int>> = _messages
@@ -54,20 +43,41 @@ class BrowserViewModel @Inject constructor(
     init {
         pageLoadProgress.pageLoadListener = object : PageLoadListener {
             override fun onProgress(progress: Int) {
-                browserState.value = browserState.value?.copy(urlToLoad = "", pageLoadProgress = progress)
+                val state = browserState.value
+                val loadProgress = if (progress == 100) 0 else progress
+                browserState.value =
+                    state?.copy(urlToLoad = "", pageLoadProgress = loadProgress)
+                        ?: BrowserState(pageLoadProgress = loadProgress)
             }
+        }
+
+        coroutineScope.launch(dispatcherProvider.io()) {
+            repository
+                .allowedDomainsFlow()
+                .onEach {
+                    val foundDomain =
+                        it.firstOrNull { allowedDomain ->
+                            allowedDomain.domain == extractDomain(addressBarText.value)
+                        }
+                    if (foundDomain != null) {
+                        withContext(dispatcherProvider.main()) {
+                            val state = browserState.value ?: BrowserState()
+                            browserState.value = state.copy(suspendBlockingForCurrentSite = true)
+                        }
+                    }
+                }
+                .collect()
         }
     }
 
     fun submitAddress() {
         coroutineScope.launch(dispatcherProvider.io()) {
-            val urlToLoad = addressBarTextField.value?.text?.addPrefixIfNeeded().orEmpty()
+            val urlToLoad = addressBarText.value?.addPrefixIfNeeded().orEmpty()
             val shouldSuspendBlocking = shouldSuspendBlockingForCurrentSite(urlToLoad)
 
             withContext(dispatcherProvider.main()) {
                 browserState.value = BrowserState(
                     urlToLoad,
-                    addressBarTextField.value ?: TextFieldValue(),
                     shouldSuspendBlocking
                 )
             }
@@ -75,7 +85,7 @@ class BrowserViewModel @Inject constructor(
     }
 
     fun allowCurrentWebsite() {
-        val uri = Uri.parse(addressBarTextField.value?.text.orEmpty().addPrefixIfNeeded())
+        val uri = Uri.parse(addressBarText.value.orEmpty().addPrefixIfNeeded())
         val domain = extractDomain(uri.host.orEmpty())
         if (domain.isNotBlank()) {
             allowWebsiteClicks.value = Event(domain)

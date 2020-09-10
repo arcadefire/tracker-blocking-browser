@@ -9,7 +9,6 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 
 data class BrowserSettings(
     val webClient: WebViewClient?,
@@ -28,9 +27,8 @@ fun BrowserContent(
             Column(modifier = Modifier.fillMaxWidth()) {
                 Browser(
                     url = state?.urlToLoad.orEmpty(),
-                    address = state?.address ?: TextFieldValue(),
                     pageLoadProgress = state?.pageLoadProgress ?: 0,
-                    onAddressChange = { viewModel.addressBarTextField.value = it },
+                    onAddressChange = { viewModel.addressBarText.value = it.text },
                     onAddressSubmit = {
                         viewModel.submitAddress()
                     },
