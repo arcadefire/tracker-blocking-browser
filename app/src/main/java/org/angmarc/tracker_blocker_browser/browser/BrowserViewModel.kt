@@ -20,7 +20,7 @@ private const val HTTP_PREFIX = "http://"
 
 data class BrowserState(
     val urlToLoad: String = "",
-    val suspendBlockingForCurrentSite: Boolean = false,
+    val isBlockingSuspended: Boolean = false,
     val pageLoadProgress: Int = 0
 )
 
@@ -62,7 +62,7 @@ class BrowserViewModel @Inject constructor(
                     if (foundDomain != null) {
                         withContext(dispatcherProvider.main()) {
                             val state = browserState.value ?: BrowserState()
-                            browserState.value = state.copy(suspendBlockingForCurrentSite = true)
+                            browserState.value = state.copy(isBlockingSuspended = true)
                         }
                     }
                 }

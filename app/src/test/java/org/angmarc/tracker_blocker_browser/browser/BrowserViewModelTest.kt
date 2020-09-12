@@ -109,7 +109,7 @@ class BrowserViewModelTest {
         assertThat(browserViewModel.browserState.value).isEqualTo(
             BrowserState(
                 urlToLoad = "https://www.techcrunch.com",
-                suspendBlockingForCurrentSite = false
+                isBlockingSuspended = false
             )
         )
     }
@@ -125,7 +125,7 @@ class BrowserViewModelTest {
             assertThat(browserViewModel.browserState.value).isEqualTo(
                 BrowserState(
                     urlToLoad = FULL_URL,
-                    suspendBlockingForCurrentSite = true
+                    isBlockingSuspended = true
                 )
             )
         }
@@ -205,7 +205,7 @@ class BrowserViewModelTest {
             assertThat(browserViewModel.browserState.value).isEqualTo(
                 BrowserState(
                     urlToLoad = "",
-                    suspendBlockingForCurrentSite = true
+                    isBlockingSuspended = true
                 )
             )
         }
