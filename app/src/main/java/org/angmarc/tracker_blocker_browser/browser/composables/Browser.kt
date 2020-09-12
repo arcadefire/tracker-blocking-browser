@@ -1,5 +1,6 @@
 package org.angmarc.tracker_blocker_browser.browser.composables
 
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.animation.animate
@@ -201,12 +202,15 @@ fun WebComponent(
             it.webChromeClient = browserSettings.chromeClient
             it.settings.apply {
                 javaScriptEnabled = true
+                domStorageEnabled = true
+                databaseEnabled = false
                 loadWithOverviewMode = true
                 useWideViewPort = true
                 builtInZoomControls = true
                 displayZoomControls = false
                 setSupportMultipleWindows(true)
                 setSupportZoom(true)
+                mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
             }
         }
     }
