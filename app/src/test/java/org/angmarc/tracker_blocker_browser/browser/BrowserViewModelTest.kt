@@ -7,8 +7,9 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -45,9 +46,11 @@ class BrowserViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
+    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    private val flowChannel = ConflatedBroadcastChannel<List<AllowedDomain>>()
     private val repository = mock<TrackersRepository> {
         runBlocking {
-            on { allowedDomainsFlow() } doReturn flow { emit(emptyList()) }
+            on { allowedDomainsFlow() } doReturn flowChannel.asFlow()
         }
     }
     private val pageLoadProgress = PageLoadProgress()
@@ -57,7 +60,7 @@ class BrowserViewModelTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(TestCoroutineDispatcher())
+        Dispatchers.setMain(testCoroutineDispatcher)
     }
 
     @After
@@ -71,9 +74,13 @@ class BrowserViewModelTest {
             whenever(repository.isDomainInAllowedList(any())).doReturn(false)
 
             browserViewModel.addressBarText.value = "techcrunch.com"
+            browserViewModel.submitAddress()
 
-            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://techcrunch.com")
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+            assertThat(browserViewModel.browserState.value).isEqualTo(
+                BrowserState(
+                    urlToLoad = "https://techcrunch.com"
+                )
+            )
         }
 
     @Test
@@ -82,19 +89,29 @@ class BrowserViewModelTest {
             whenever(repository.isDomainInAllowedList(any())).doReturn(false)
 
             browserViewModel.addressBarText.value = FULL_URL
+            browserViewModel.submitAddress()
 
-            assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://www.techcrunch.com")
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+            assertThat(browserViewModel.browserState.value).isEqualTo(
+                BrowserState(
+                    urlToLoad = FULL_URL
+                )
+            )
         }
 
     @Test
     fun `should trim space before and after the typed address`() = runBlockingTest {
+        val addressWithTrailingSpaces = "   $FULL_URL   "
         whenever(repository.isDomainInAllowedList(any())).doReturn(false)
 
         browserViewModel.addressBarText.value = "   $FULL_URL   "
+        browserViewModel.submitAddress()
 
-        assertThat(getValue(browserViewModel.state).urlToLoad).isEqualTo("https://www.techcrunch.com")
-        assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(false)
+        assertThat(browserViewModel.browserState.value).isEqualTo(
+            BrowserState(
+                urlToLoad = "https://www.techcrunch.com",
+                isBlockingSuspended = false
+            )
+        )
     }
 
     @Test
@@ -103,8 +120,14 @@ class BrowserViewModelTest {
             whenever(repository.isDomainInAllowedList(any())).doReturn(true)
 
             browserViewModel.addressBarText.value = FULL_URL
+            browserViewModel.submitAddress()
 
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isEqualTo(true)
+            assertThat(browserViewModel.browserState.value).isEqualTo(
+                BrowserState(
+                    urlToLoad = FULL_URL,
+                    isBlockingSuspended = true
+                )
+            )
         }
 
     @Test
@@ -142,10 +165,9 @@ class BrowserViewModelTest {
     fun `should emit a new loading state, when the progress has change from zero to an amount`() {
         pageLoadProgress.progressChanged(20)
 
-        assertThat(getValue(browserViewModel.loadingState)).isEqualTo(
-            LoadingState(
-                shouldShowProgress = true,
-                progress = 20
+        assertThat(getValue(browserViewModel.browserState)).isEqualTo(
+            BrowserState(
+                pageLoadProgress = 20
             )
         )
     }
@@ -154,10 +176,9 @@ class BrowserViewModelTest {
     fun `should emit a new loading state to hide the progress, when it reaches completion`() {
         pageLoadProgress.progressChanged(100)
 
-        assertThat(getValue(browserViewModel.loadingState)).isEqualTo(
-            LoadingState(
-                shouldShowProgress = false,
-                progress = 0
+        assertThat(getValue(browserViewModel.browserState)).isEqualTo(
+            BrowserState(
+                pageLoadProgress = 0
             )
         )
     }
@@ -165,23 +186,27 @@ class BrowserViewModelTest {
     @Test
     fun `should emit a new state when the current site is flagged as an allowed domain`() =
         runBlockingTest {
-            val list: MutableList<AllowedDomain> = mutableListOf()
-            val flow = flow<List<AllowedDomain>> {
-                while (list.isNotEmpty()) {
-                    emit(list)
-                }
-            }
+            browserViewModel.browserState.observeForever {}
 
             browserViewModel.addressBarText.value = FULL_URL
 
             whenever(repository.isDomainInAllowedList(DOMAIN_ONLY)).doReturn(false)
-            // We just take one element and unsubscribe from the infinite flow
-            whenever(repository.allowedDomainsFlow()).doReturn(flow.take(1))
 
             // Trigger an emission of a non-empty list on the allow-domains-list flow
-            list.add(AllowedDomain(DOMAIN_ONLY, breakageType = BreakageType.VIDEOS_DONT_LOAD))
+            flowChannel.sendBlocking(
+                listOf(
+                    AllowedDomain(
+                        DOMAIN_ONLY,
+                        breakageType = BreakageType.VIDEOS_DONT_LOAD
+                    )
+                )
+            )
 
-            // And check the value generated from the mediator live data
-            assertThat(getValue(browserViewModel.state).shouldSuspendBlocking).isTrue()
+            assertThat(browserViewModel.browserState.value).isEqualTo(
+                BrowserState(
+                    urlToLoad = "",
+                    isBlockingSuspended = true
+                )
+            )
         }
 }

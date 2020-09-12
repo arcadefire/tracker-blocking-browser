@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="03d8d3ef-851c-4aa3-a5e1-7cb264dd1db7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageViewManager">
+    <option name="myElementSize" value="272" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_30" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="tracker-blocker-browser" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
+        <option value="Kotlin File" />
+        <option value="JUnit4 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KotlinCodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="ProjectId" id="1fH5URB9hoBpsCcIvZJZDYnpavh" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DEBUGGABLE_DEVICE" value="emulator-5554" />
+    <property name="DEBUGGABLE_PROCESS" value="org.angmarc.tracker_blocker_browser" />
+    <property name="DEBUGGER_ID" value="Auto" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/test/java/org/angmarc/tracker_blocker_browser/browser" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/java/org/angmarc/tracker_blocker_browser/stats" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="org.angmarc.tracker_blocker_browser.di" />
+      <recent name="org.angmarc.tracker_blocker_browser.workers.core" />
+      <recent name="org.angmarc.tracker_blocker_browser.browser" />
+      <recent name="org.angmarc.tracker_blocker_browser.data.database" />
+      <recent name="org.angmarc.tracker_blocker_browser.data.file_loader" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.angmarc.tracker_blocker_browser.browser" />
+      <recent name="org.angmarc.tracker_blocker_browser.data" />
+      <recent name="org.angmarc.tracker_blocker_browser.exception_report" />
+      <recent name="org.angmarc.tracker_blocker_browser.workers" />
+      <recent name="org.angmarc.tracker_blocker_browser.stats" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="org.angmarc.tracker_blocker_browser.browser" />
+      <recent name="org.angmarc.tracker_blocker_browser.data" />
+      <recent name="org.angmarc.tracker_blocker_browser.stats" />
+      <recent name="org.angmarc.tracker_blocker_browser.allowed_list" />
+      <recent name="org.angmarc.tracker_blocker_browser.data.database" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/org/angmarc/tracker_blocker_browser/stats" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/org/angmarc/tracker_blocker_browser" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/org/angmarc/tracker_blocker_browser/allowed_list" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/menu" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/test/java/org/angmarc/tracker_blocker_browser/browser" />
+      <recent name="$PROJECT_DIR$/app/src/androidTest/java/org/angmarc/tracker_blocker_browser/browser" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/org/angmarc/tracker_blocker_browser/core" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/org/angmarc/tracker_blocker_browser/browser" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/org/angmarc/tracker_blocker_browser/data/file_loader" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Android App.app">
+    <configuration name="ExtractDomainFunctionTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.angmarc.tracker_blocker_browser.browser.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.angmarc.tracker_blocker_browser.browser" />
+      <option name="MAIN_CLASS_NAME" value="org.angmarc.tracker_blocker_browser.browser.ExtractDomainFunctionTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TrackerDataFileLoaderTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.angmarc.tracker_blocker_browser.data.file_loader.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.angmarc.tracker_blocker_browser.data.file_loader" />
+      <option name="MAIN_CLASS_NAME" value="org.angmarc.tracker_blocker_browser.data.file_loader.TrackerDataFileLoaderTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="tracker_blocker_browser in app" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <option name="TEST_OBJECT" value="directory" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <dir value="$PROJECT_DIR$/app/src/test/java/org/angmarc/tracker_blocker_browser" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tests in 'org.angmarc.tracker_blocker_browser'" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <option name="TESTING_TYPE" value="1" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="org.angmarc.tracker_blocker_browser" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="EXTRA_OPTIONS" value="" />
+      <option name="INCLUDE_GRADLE_EXTRA_OPTIONS" value="true" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BrowserViewModelTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.angmarc.tracker_blocker_browser.browser.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.angmarc.tracker_blocker_browser.browser" />
+      <option name="MAIN_CLASS_NAME" value="org.angmarc.tracker_blocker_browser.browser.BrowserViewModelTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Android JUnit.tracker_blocker_browser in app" />
+        <item itemvalue="Android Instrumented Tests.Tests in 'org.angmarc.tracker_blocker_browser'" />
+        <item itemvalue="Android JUnit.ExtractDomainFunctionTest" />
+        <item itemvalue="Android JUnit.TrackerDataFileLoaderTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="03d8d3ef-851c-4aa3-a5e1-7cb264dd1db7" name="Default Changelist" comment="" />
+      <created>1595862192911</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1595862192911</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="365" y="236" key="#PSD" timestamp="1595863773934">
+      <screen x="0" y="23" width="1680" height="949" />
+    </state>
+    <state x="365" y="236" key="#PSD/0.23.1680.949@0.23.1680.949" timestamp="1595863773934" />
+    <state x="1031" y="527" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog" timestamp="1596300463308">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="1031" y="527" key="#com.intellij.ide.actions.ChooseComponentsToExportDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596300463308" />
+    <state x="1117" y="383" key="#com.intellij.ide.util.MemberChooser" timestamp="1596439837239">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="1117" y="383" key="#com.intellij.ide.util.MemberChooser/0.23.2560.1334@0.23.2560.1334" timestamp="1596439837239" />
+    <state x="793" y="573" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1596194766676">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="793" y="573" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596194766676" />
+    <state x="903" y="23" width="865" height="831" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1596437774003">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="903" y="23" width="865" height="831" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596437774003" />
+    <state x="944" y="353" width="608" height="681" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog" timestamp="1596289822530">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="944" y="353" width="608" height="681" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596289822530" />
+    <state x="1030" y="609" width="656" height="579" key="#xdebugger.evaluate" timestamp="1596447065502">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="1030" y="609" width="656" height="579" key="#xdebugger.evaluate/0.23.2560.1334@0.23.2560.1334" timestamp="1596447065502" />
+    <state x="1219" y="402" key="#xdebugger.evaluate/0.23.2560.1337@0.23.2560.1337" timestamp="1596179202019" />
+    <state x="1021" y="588" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1599555164277">
+      <screen x="0" y="23" width="2560" height="1330" />
+    </state>
+    <state x="1021" y="588" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.23.2560.1330@0.23.2560.1330" timestamp="1599555164277" />
+    <state x="1194" y="515" key="AndroidCreateXmlResourceDialog" timestamp="1596386737955">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="1194" y="515" key="AndroidCreateXmlResourceDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596386737955" />
+    <state x="1091" y="475" key="AndroidProcessChooserDialog" timestamp="1596445322577">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="1091" y="475" key="AndroidProcessChooserDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596445322577" />
+    <state x="1091" y="476" key="AndroidProcessChooserDialog/0.23.2560.1337@0.23.2560.1337" timestamp="1596189723505" />
+    <state width="538" height="466" key="DebuggerActiveHint" timestamp="1596445348160">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="538" height="466" key="DebuggerActiveHint/0.23.2560.1334@0.23.2560.1334" timestamp="1596445348160" />
+    <state x="503" y="185" width="1499" height="905" key="DiffContextDialog" timestamp="1596362802078">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="503" y="185" width="1499" height="905" key="DiffContextDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596362802078" />
+    <state width="934" height="505" key="GridCell.Tab.0.bottom" timestamp="1596463790408">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="934" height="505" key="GridCell.Tab.0.bottom/0.23.2560.1334@0.23.2560.1334" timestamp="1596463790408" />
+    <state width="1626" height="416" key="GridCell.Tab.0.bottom/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821214" />
+    <state width="934" height="505" key="GridCell.Tab.0.center" timestamp="1596463790408">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="934" height="505" key="GridCell.Tab.0.center/0.23.2560.1334@0.23.2560.1334" timestamp="1596463790408" />
+    <state width="1626" height="416" key="GridCell.Tab.0.center/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821213" />
+    <state width="934" height="505" key="GridCell.Tab.0.left" timestamp="1596463790408">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="934" height="505" key="GridCell.Tab.0.left/0.23.2560.1334@0.23.2560.1334" timestamp="1596463790408" />
+    <state width="1626" height="416" key="GridCell.Tab.0.left/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821213" />
+    <state width="934" height="505" key="GridCell.Tab.0.right" timestamp="1596463790408">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="934" height="505" key="GridCell.Tab.0.right/0.23.2560.1334@0.23.2560.1334" timestamp="1596463790408" />
+    <state width="1626" height="416" key="GridCell.Tab.0.right/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821214" />
+    <state width="1699" height="423" key="GridCell.Tab.1.bottom" timestamp="1596448424883">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="1699" height="423" key="GridCell.Tab.1.bottom/0.23.2560.1334@0.23.2560.1334" timestamp="1596448424883" />
+    <state width="1626" height="416" key="GridCell.Tab.1.bottom/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821215" />
+    <state width="1699" height="423" key="GridCell.Tab.1.center" timestamp="1596448424882">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="1699" height="423" key="GridCell.Tab.1.center/0.23.2560.1334@0.23.2560.1334" timestamp="1596448424882" />
+    <state width="1626" height="416" key="GridCell.Tab.1.center/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821214" />
+    <state width="1699" height="423" key="GridCell.Tab.1.left" timestamp="1596448424882">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="1699" height="423" key="GridCell.Tab.1.left/0.23.2560.1334@0.23.2560.1334" timestamp="1596448424882" />
+    <state width="1626" height="416" key="GridCell.Tab.1.left/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821214" />
+    <state width="1699" height="423" key="GridCell.Tab.1.right" timestamp="1596448424883">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="1699" height="423" key="GridCell.Tab.1.right/0.23.2560.1334@0.23.2560.1334" timestamp="1596448424883" />
+    <state width="1626" height="416" key="GridCell.Tab.1.right/0.23.2560.1337@0.23.2560.1337" timestamp="1596189821215" />
+    <state x="847" y="295" key="SettingsEditor" timestamp="1596440445486">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="847" y="295" key="SettingsEditor/0.23.2560.1334@0.23.2560.1334" timestamp="1596440445486" />
+    <state width="774" height="609" key="XDebugger.FullValuePopup" timestamp="1596222857924">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state width="774" height="609" key="XDebugger.FullValuePopup/0.23.2560.1334@0.23.2560.1334" timestamp="1596222857924" />
+    <state x="1088" y="493" key="chooseDestDirectoryDialog" timestamp="1596444006350">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="1088" y="493" key="chooseDestDirectoryDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596444006350" />
+    <state x="510" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1597858263144">
+      <screen x="0" y="23" width="1680" height="954" />
+    </state>
+    <state x="510" y="357" key="com.intellij.ide.util.TipDialog/0.23.1680.954@0.23.1680.954" timestamp="1597858263144" />
+    <state x="912" y="261" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1596301885804">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="912" y="261" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.2560.1334@0.23.2560.1334" timestamp="1596301885804" />
+    <state x="876" y="461" width="1038" height="554" key="find.popup" timestamp="1596533846749">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="876" y="461" width="1038" height="554" key="find.popup/0.23.2560.1334@0.23.2560.1334" timestamp="1596533846749" />
+    <state x="876" y="462" width="692" height="486" key="find.popup/0.23.2560.1337@0.23.2560.1337" timestamp="1596189538050" />
+    <state x="1004" y="442" key="org.jetbrains.kotlin.idea.testIntegration.KotlinCreateTestDialog" timestamp="1596444006384">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="1004" y="442" key="org.jetbrains.kotlin.idea.testIntegration.KotlinCreateTestDialog/0.23.2560.1334@0.23.2560.1334" timestamp="1596444006384" />
+    <state x="900" y="331" key="run.anything.popup" timestamp="1596226386026">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="900" y="331" key="run.anything.popup/0.23.2560.1334@0.23.2560.1334" timestamp="1596226386026" />
+    <state x="900" y="332" key="run.anything.popup/0.23.2560.1337@0.23.2560.1337" timestamp="1596179486075" />
+    <state x="900" y="377" width="670" height="675" key="search.everywhere.popup" timestamp="1596819117751">
+      <screen x="0" y="23" width="2560" height="1334" />
+    </state>
+    <state x="900" y="377" width="670" height="675" key="search.everywhere.popup/0.23.2560.1334@0.23.2560.1334" timestamp="1596819117751" />
+    <state x="900" y="378" width="670" height="676" key="search.everywhere.popup/0.23.2560.1337@0.23.2560.1337" timestamp="1596189723216" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/angmarc/tracker_blocker_browser/data/file_loader/TrackerDataFileLoaderTest.kt</url>
+          <line>67</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$TrackerDataDownloadWorkerTest.ic" NAME="TrackerDataDownloadWorkerTest Coverage Results" MODIFIED="1596302712455" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.angmarc.tracker_blocker_browser.workers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$TrackerDataFileLoaderTest.ic" NAME="TrackerDataFileLoaderTest Coverage Results" MODIFIED="1596223521490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.angmarc.tracker_blocker_browser.data.file_loader.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$AllowDomainViewModelTest_should_save_the_allowed_website_with_the_default_breakage_type_when_the_add_button_is_clicked.ic" NAME="AllowDomainViewModelTest.should save the allowed website with the default breakage-type when the add button is clicked Coverage Results" MODIFIED="1596274633233" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.angmarc.tracker_blocker_browser.allowed_list.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$StatsViewModelTest.ic" NAME="StatsViewModelTest Coverage Results" MODIFIED="1596284541782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.angmarc.tracker_blocker_browser.stats.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$tracker_blocker_browser_in_app.ic" NAME="tracker_blocker_browser in app Coverage Results" MODIFIED="1596302830628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$RequestAnalyzerTest.ic" NAME="RequestAnalyzerTest Coverage Results" MODIFIED="1596299890412" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.angmarc.tracker_blocker_browser.browser.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$BrowserViewModelTest.ic" NAME="BrowserViewModelTest Coverage Results" MODIFIED="1596438880681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.angmarc.tracker_blocker_browser.browser.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/tracker_blocker_browser$AllowDomainViewModelTest.ic" NAME="AllowDomainViewModelTest Coverage Results" MODIFIED="1596284765609" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.angmarc.tracker_blocker_browser.allowed_list.*</FILTER>
+    </SUITE>
+  </component>
+</project>

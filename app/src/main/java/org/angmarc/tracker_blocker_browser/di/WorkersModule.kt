@@ -21,7 +21,7 @@ object WorkersModule {
 
     @Provides
     @IntoMap
-    @StringKey("TrackerDataDownloadWorker")
+    @StringKey("org.angmarc.tracker_blocker_browser.workers.TrackerDataDownloadWorker")
     fun provideWorkerFactory(
         trackersDataService: TrackersDataService,
         repository: TrackersRepository,
