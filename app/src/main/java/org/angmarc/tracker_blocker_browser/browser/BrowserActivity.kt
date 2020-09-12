@@ -1,7 +1,6 @@
 package org.angmarc.tracker_blocker_browser.browser
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -14,7 +13,6 @@ import org.angmarc.tracker_blocker_browser.add_allowed_domain.AllowDomainFragmen
 import org.angmarc.tracker_blocker_browser.browser.composables.BrowserContent
 import org.angmarc.tracker_blocker_browser.browser.composables.BrowserSettings
 import org.angmarc.tracker_blocker_browser.core.EventObserver
-import org.angmarc.tracker_blocker_browser.databinding.ActivityBrowserBinding
 import org.angmarc.tracker_blocker_browser.stats.StatsDialogFragment
 import javax.inject.Inject
 
@@ -22,8 +20,6 @@ private const val FRAGMENT_ADD_TO_ALLOW_LIST = "fragment-add-to-allow-list"
 private const val FRAGMENT_VIEW_STATISTICS = "fragment-view-statistics"
 
 class BrowserActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityBrowserBinding
 
     @Inject
     lateinit var webClient: BrowserWebClient
@@ -48,13 +44,9 @@ class BrowserActivity : AppCompatActivity() {
             .build()
             .inject(this)
 
-        binding = ActivityBrowserBinding.inflate(LayoutInflater.from(this), null, false)
-
         setContent {
             BrowserContent(viewModel, browserSettings = BrowserSettings(webClient, chromeClient))
         }
-
-        setSupportActionBar(findViewById(R.id.toolbar))
 
         viewModel.messages.observe(this, EventObserver {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
